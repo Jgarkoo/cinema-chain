@@ -1,0 +1,384 @@
+<div class="sign-up-formField">
+  <div class="top-field">
+    <div class="leftSide">
+      <h2>Sign up</h2>
+      <p>Welcome to Kino XII</p>
+    </div>
+    <a id="close-button" [routerLink]="['/home-page']">
+      &#x2715;
+    </a>
+  </div>
+  <form class="bottom-field" [formGroup]="registerForm" (ngSubmit)="register()">
+    <div class="avatar-field">
+      <div class="avatar-upload">
+        @if (!photoIsUploaded) {
+          <label for="avatar">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 16V4M12 4L8 8M12 4L16 8"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M5 12V18C5 19.1046 5.89543 20 7 20H17C18.1046 20 19 19.1046 19 18V12"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </label>
+        } @else {
+          <div class="avatar-preview">
+            <img
+              [src]="avatarImage"
+              alt="Uploaded avatar"
+            >
+            <button
+              type="button"
+              class="avatar-cancel"
+              (click)="cancelFile()"
+            >
+              ×
+            </button>
+          </div>
+        }
+        <input
+          class="avatar-file-input"
+          id="avatar"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          (change)="onFileSelected($event)"
+        >
+      </div>
+      <div class="avatar-text">
+        <h3>
+          Upload avatar <span>(optional)</span>
+        </h3>
+        <p>
+          JPG, PNG or WEBP
+        </p>
+      </div>
+    </div>
+    <div class="input-field username-field">
+      <label for="username"
+             [ngClass]="{
+              'default-label-status': !username?.touched,
+              'invalid-label-status': username?.touched,
+              'valid-label-status': username?.touched && username?.valid
+        }"
+      >
+        Username
+      </label>
+      <input type="text" id="username" placeholder="User" formControlName="username"
+             [ngClass]="{
+              'default-status': !username?.touched,
+              'invalid-status': username?.touched,
+              'valid-status': username?.touched && username?.valid
+        }"
+      >
+      @if(username?.touched && username?.invalid){
+        <p id="error">
+          <svg width="16px" height="16px" viewBox="0 0 16 16" fill="none"
+               xmlns="http://www.w3.org/2000/svg">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <path d="M7.493 0.015 C 7.442 0.021,7.268 0.039,7.107 0.055 C 5.234
+            0.242,3.347 1.208,2.071 2.634 C 0.660 4.211,-0.057 6.168,0.009 8.253
+            C 0.124 11.854,2.599 14.903,6.110 15.771 C 8.169 16.280,10.433 15.917,12.227
+            14.791 C 14.017 13.666,15.270 11.933,15.771 9.887 C 15.943 9.186,15.983 8.829,15.983
+            8.000 C 15.983 7.171,15.943 6.814,15.771 6.113 C 14.979 2.878,12.315 0.498,9.000
+            0.064 C 8.716 0.027,7.683 -0.006,7.493 0.015 M8.853 1.563 C 9.967 1.707,11.010
+            2.136,11.944 2.834 C 12.273 3.080,12.920 3.727,13.166 4.056 C 13.727 4.807,14.142 5.690,14.330
+            6.535 C 14.544 7.500,14.544 8.500,14.330 9.465 C 13.916 11.326,12.605 12.978,10.867 13.828 C
+            10.239 14.135,9.591 14.336,8.880 14.444 C 8.456 14.509,7.544 14.509,7.120 14.444 C 5.172 14.148,3.528
+            13.085,2.493 11.451 C 2.279 11.114,1.999 10.526,1.859 10.119 C 1.618 9.422,1.514 8.781,1.514 8.000 C 1.514
+            6.961,1.715 6.075,2.160 5.160 C 2.500 4.462,2.846 3.980,3.413 3.413 C 3.980 2.846,4.462 2.500,5.160 2.160 C
+            6.313 1.599,7.567 1.397,8.853 1.563 M7.706 4.290 C 7.482 4.363,7.355 4.491,7.293 4.705 C 7.257 4.827,7.253
+            5.106,7.259
+            6.816 C 7.267 8.786,7.267 8.787,7.325 8.896 C 7.398 9.033,7.538 9.157,7.671 9.204 C 7.803 9.250,8.197 9.250,
+            8.329 9.204
+            C 8.462 9.157,8.602 9.033,8.675 8.896 C 8.733 8.787,8.733 8.786,8.741 6.816 C 8.749 4.664,8.749 4.662,8.596
+            4.481 C 8.472
+            4.333,8.339 4.284,8.040 4.276 C 7.893 4.272,7.743 4.278,7.706 4.290 M7.786 10.530 C 7.597 10.592,7.410
+            10.753,7.319
+            10.932 C 7.249
+            11.072,7.237 11.325,7.294 11.495 C 7.388 11.780,7.697 12.000,8.000 12.000 C 8.303 12.000,8.612 11.780,8.706
+            11.495
+            C 8.763 11.325,8.751
+            11.072,8.681 10.932 C 8.616 10.804,8.460 10.646,8.333 10.580 C 8.217 10.520,7.904 10.491,7.786 10.530
+            "stroke="none" fill-rule="evenodd" fill="#EC3013"></path>
+            </g>
+          </svg>
+        </p>
+        <span>
+            At least 3 character
+          </span>
+      } @else if(username?.valid) {
+        <p id="check">
+          <svg width="16px" height="16px" viewBox="0 -0.5 25 25" fill="none"
+               xmlns="http://www.w3.org/2000/svg" stroke="#4ADE80">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+            </g>
+            <g id="SVGRepo_iconCarrier">
+              <path d="M5.5 12.5L10.167 17L19.5 8" stroke="#4ADE80"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              </path>
+            </g>
+          </svg>
+        </p>
+      }
+    </div>
+    <div class="email-field input-field">
+      <label for="email"
+             [ngClass]="{
+              'default-label-status': !email?.touched,
+              'invalid-label-status': email?.touched,
+              'valid-label-status': email?.touched && email?.valid
+        }"
+      >
+        Email
+      </label>
+      <input type="email" id="email" placeholder="example@gmail.com" formControlName="email"
+             [ngClass]="{
+              'default-status': !email?.touched,
+              'invalid-status': email?.touched,
+              'valid-status': email?.touched && email?.valid
+        }"
+      >
+      @if(email?.touched && email?.invalid){
+        <p id="error">
+          <svg width="16px" height="16px" viewBox="0 0 16 16" fill="none"
+               xmlns="http://www.w3.org/2000/svg">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <path d="M7.493 0.015 C 7.442 0.021,7.268 0.039,7.107 0.055 C 5.234
+            0.242,3.347 1.208,2.071 2.634 C 0.660 4.211,-0.057 6.168,0.009 8.253
+            C 0.124 11.854,2.599 14.903,6.110 15.771 C 8.169 16.280,10.433 15.917,12.227
+            14.791 C 14.017 13.666,15.270 11.933,15.771 9.887 C 15.943 9.186,15.983 8.829,15.983
+            8.000 C 15.983 7.171,15.943 6.814,15.771 6.113 C 14.979 2.878,12.315 0.498,9.000
+            0.064 C 8.716 0.027,7.683 -0.006,7.493 0.015 M8.853 1.563 C 9.967 1.707,11.010
+            2.136,11.944 2.834 C 12.273 3.080,12.920 3.727,13.166 4.056 C 13.727 4.807,14.142 5.690,14.330
+            6.535 C 14.544 7.500,14.544 8.500,14.330 9.465 C 13.916 11.326,12.605 12.978,10.867 13.828 C
+            10.239 14.135,9.591 14.336,8.880 14.444 C 8.456 14.509,7.544 14.509,7.120 14.444 C 5.172 14.148,3.528
+            13.085,2.493 11.451 C 2.279 11.114,1.999 10.526,1.859 10.119 C 1.618 9.422,1.514 8.781,1.514 8.000 C 1.514
+            6.961,1.715 6.075,2.160 5.160 C 2.500 4.462,2.846 3.980,3.413 3.413 C 3.980 2.846,4.462 2.500,5.160 2.160 C
+            6.313 1.599,7.567 1.397,8.853 1.563 M7.706 4.290 C 7.482 4.363,7.355 4.491,7.293 4.705 C 7.257 4.827,7.253
+            5.106,7.259
+            6.816 C 7.267 8.786,7.267 8.787,7.325 8.896 C 7.398 9.033,7.538 9.157,7.671 9.204 C 7.803 9.250,8.197 9.250,
+            8.329 9.204
+            C 8.462 9.157,8.602 9.033,8.675 8.896 C 8.733 8.787,8.733 8.786,8.741 6.816 C 8.749 4.664,8.749 4.662,8.596
+            4.481 C 8.472
+            4.333,8.339 4.284,8.040 4.276 C 7.893 4.272,7.743 4.278,7.706 4.290 M7.786 10.530 C 7.597 10.592,7.410
+            10.753,7.319
+            10.932 C 7.249
+            11.072,7.237 11.325,7.294 11.495 C 7.388 11.780,7.697 12.000,8.000 12.000 C 8.303 12.000,8.612 11.780,8.706
+            11.495
+            C 8.763 11.325,8.751
+            11.072,8.681 10.932 C 8.616 10.804,8.460 10.646,8.333 10.580 C 8.217 10.520,7.904 10.491,7.786 10.530
+            "stroke="none" fill-rule="evenodd" fill="#EC3013"></path>
+            </g>
+          </svg>
+        </p>
+        <span>
+            Has to be Email
+          </span>
+      } @else if(email?.valid) {
+        <p id="check">
+          <svg width="16px" height="16px" viewBox="0 -0.5 25 25" fill="none"
+               xmlns="http://www.w3.org/2000/svg" stroke="#4ADE80">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+            </g>
+            <g id="SVGRepo_iconCarrier">
+              <path d="M5.5 12.5L10.167 17L19.5 8" stroke="#4ADE80"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              </path>
+            </g>
+          </svg>
+        </p>
+      }
+    </div>
+    <div class="password-fields">
+      <div class="input-field pass-field">
+        <label for="password"
+               [ngClass]="{
+              'default-label-status': !password?.touched,
+              'invalid-label-status': password?.touched,
+              'valid-label-status': password?.touched && password?.valid
+        }">
+          Password
+        </label>
+        <input type="password" id="password" placeholder="••••••••" formControlName="password"
+               [ngClass]="{
+              'default-status': !password?.touched,
+              'invalid-status': password?.touched,
+              'valid-status': password?.touched && password?.valid
+        }"
+        >
+        @if(password?.touched && password?.invalid){
+          <p id="error">
+            <svg width="16px" height="16px" viewBox="0 0 16 16" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <path d="M7.493 0.015 C 7.442 0.021,7.268 0.039,7.107 0.055 C 5.234
+            0.242,3.347 1.208,2.071 2.634 C 0.660 4.211,-0.057 6.168,0.009 8.253
+            C 0.124 11.854,2.599 14.903,6.110 15.771 C 8.169 16.280,10.433 15.917,12.227
+            14.791 C 14.017 13.666,15.270 11.933,15.771 9.887 C 15.943 9.186,15.983 8.829,15.983
+            8.000 C 15.983 7.171,15.943 6.814,15.771 6.113 C 14.979 2.878,12.315 0.498,9.000
+            0.064 C 8.716 0.027,7.683 -0.006,7.493 0.015 M8.853 1.563 C 9.967 1.707,11.010
+            2.136,11.944 2.834 C 12.273 3.080,12.920 3.727,13.166 4.056 C 13.727 4.807,14.142 5.690,14.330
+            6.535 C 14.544 7.500,14.544 8.500,14.330 9.465 C 13.916 11.326,12.605 12.978,10.867 13.828 C
+            10.239 14.135,9.591 14.336,8.880 14.444 C 8.456 14.509,7.544 14.509,7.120 14.444 C 5.172 14.148,3.528
+            13.085,2.493 11.451 C 2.279 11.114,1.999 10.526,1.859 10.119 C 1.618 9.422,1.514 8.781,1.514 8.000 C 1.514
+            6.961,1.715 6.075,2.160 5.160 C 2.500 4.462,2.846 3.980,3.413 3.413 C 3.980 2.846,4.462 2.500,5.160 2.160 C
+            6.313 1.599,7.567 1.397,8.853 1.563 M7.706 4.290 C 7.482 4.363,7.355 4.491,7.293 4.705 C 7.257 4.827,7.253
+            5.106,7.259
+            6.816 C 7.267 8.786,7.267 8.787,7.325 8.896 C 7.398 9.033,7.538 9.157,7.671 9.204 C 7.803 9.250,8.197 9.250,
+            8.329 9.204
+            C 8.462 9.157,8.602 9.033,8.675 8.896 C 8.733 8.787,8.733 8.786,8.741 6.816 C 8.749 4.664,8.749 4.662,8.596
+            4.481 C 8.472
+            4.333,8.339 4.284,8.040 4.276 C 7.893 4.272,7.743 4.278,7.706 4.290 M7.786 10.530 C 7.597 10.592,7.410
+            10.753,7.319
+            10.932 C 7.249
+            11.072,7.237 11.325,7.294 11.495 C 7.388 11.780,7.697 12.000,8.000 12.000 C 8.303 12.000,8.612 11.780,8.706
+            11.495
+            C 8.763 11.325,8.751
+            11.072,8.681 10.932 C 8.616 10.804,8.460 10.646,8.333 10.580 C 8.217 10.520,7.904 10.491,7.786 10.530
+            "stroke="none" fill-rule="evenodd" fill="#EC3013"></path>
+              </g>
+            </svg>
+          </p>
+          <span>
+            At least 3 character
+          </span>
+        } @else if(password?.valid) {
+          <p id="check">
+            <svg width="16px" height="16px" viewBox="0 -0.5 25 25" fill="none"
+                 xmlns="http://www.w3.org/2000/svg" stroke="#4ADE80">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+              </g>
+              <g id="SVGRepo_iconCarrier">
+                <path d="M5.5 12.5L10.167 17L19.5 8" stroke="#4ADE80"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                </path>
+              </g>
+            </svg>
+          </p>
+        }
+      </div>
+      <div class="input-field conf-field">
+        <label for="confirm-password"
+               [ngClass]="{
+                'default-label-status': !pConfirmation?.touched,
+                'invalid-label-status':
+                  pConfirmation?.touched &&
+                  (pConfirmation?.invalid || registerForm.hasError('passwordsDoNotMatch')),
+                'valid-label-status':
+                  pConfirmation?.touched &&
+                  pConfirmation?.valid &&
+                  !registerForm.hasError('passwordsDoNotMatch')
+        }"
+        >
+          Confirm password
+        </label>
+        <input type="password" id="confirm-password" placeholder="••••••••" formControlName="password_confirmation"
+               [ngClass]="{
+                'default-status': !pConfirmation?.touched,
+                'invalid-status':
+                  pConfirmation?.touched &&
+                  (pConfirmation?.invalid || registerForm.hasError('passwordsDoNotMatch')),
+                'valid-status':
+                  pConfirmation?.touched &&
+                  pConfirmation?.valid &&
+                  !registerForm.hasError('passwordsDoNotMatch')
+        }"
+        >
+        @if(pConfirmation?.touched && pConfirmation?.invalid){
+          <p id="error">
+            <svg width="16px" height="16px" viewBox="0 0 16 16" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <path d="M7.493 0.015 C 7.442 0.021,7.268 0.039,7.107 0.055 C 5.234
+            0.242,3.347 1.208,2.071 2.634 C 0.660 4.211,-0.057 6.168,0.009 8.253
+            C 0.124 11.854,2.599 14.903,6.110 15.771 C 8.169 16.280,10.433 15.917,12.227
+            14.791 C 14.017 13.666,15.270 11.933,15.771 9.887 C 15.943 9.186,15.983 8.829,15.983
+            8.000 C 15.983 7.171,15.943 6.814,15.771 6.113 C 14.979 2.878,12.315 0.498,9.000
+            0.064 C 8.716 0.027,7.683 -0.006,7.493 0.015 M8.853 1.563 C 9.967 1.707,11.010
+            2.136,11.944 2.834 C 12.273 3.080,12.920 3.727,13.166 4.056 C 13.727 4.807,14.142 5.690,14.330
+            6.535 C 14.544 7.500,14.544 8.500,14.330 9.465 C 13.916 11.326,12.605 12.978,10.867 13.828 C
+            10.239 14.135,9.591 14.336,8.880 14.444 C 8.456 14.509,7.544 14.509,7.120 14.444 C 5.172 14.148,3.528
+            13.085,2.493 11.451 C 2.279 11.114,1.999 10.526,1.859 10.119 C 1.618 9.422,1.514 8.781,1.514 8.000 C 1.514
+            6.961,1.715 6.075,2.160 5.160 C 2.500 4.462,2.846 3.980,3.413 3.413 C 3.980 2.846,4.462 2.500,5.160 2.160 C
+            6.313 1.599,7.567 1.397,8.853 1.563 M7.706 4.290 C 7.482 4.363,7.355 4.491,7.293 4.705 C 7.257 4.827,7.253
+            5.106,7.259
+            6.816 C 7.267 8.786,7.267 8.787,7.325 8.896 C 7.398 9.033,7.538 9.157,7.671 9.204 C 7.803 9.250,8.197 9.250,
+            8.329 9.204
+            C 8.462 9.157,8.602 9.033,8.675 8.896 C 8.733 8.787,8.733 8.786,8.741 6.816 C 8.749 4.664,8.749 4.662,8.596
+            4.481 C 8.472
+            4.333,8.339 4.284,8.040 4.276 C 7.893 4.272,7.743 4.278,7.706 4.290 M7.786 10.530 C 7.597 10.592,7.410
+            10.753,7.319
+            10.932 C 7.249
+            11.072,7.237 11.325,7.294 11.495 C 7.388 11.780,7.697 12.000,8.000 12.000 C 8.303 12.000,8.612 11.780,8.706
+            11.495
+            C 8.763 11.325,8.751
+            11.072,8.681 10.932 C 8.616 10.804,8.460 10.646,8.333 10.580 C 8.217 10.520,7.904 10.491,7.786 10.530
+            "stroke="none" fill-rule="evenodd" fill="#EC3013"></path>
+              </g>
+            </svg>
+          </p>
+          <span>
+            At least 3 character
+          </span>
+        } @else if (pConfirmation?.touched && registerForm.hasError('passwordsDoNotMatch')){
+          <span class="password-match-error">
+            Passwords do not match
+          </span>
+        } @else if(pConfirmation?.touched &&
+        pConfirmation?.valid &&
+        !registerForm.hasError('passwordsDoNotMatch')){
+        <p id="check">
+          <svg width="16px" height="16px" viewBox="0 -0.5 25 25" fill="none"
+          xmlns="http://www.w3.org/2000/svg" stroke="#4ADE80">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+          </g>
+          <g id="SVGRepo_iconCarrier">
+          <path d="M5.5 12.5L10.167 17L19.5 8" stroke="#4ADE80"
+          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          </path>
+          </g>
+          </svg>
+          </p>
+          }
+      </div>
+    </div>
+    <div class="login-signup-button">
+      <button
+        type="submit"
+        [disabled]="registerForm.invalid"
+        [ngClass]="{
+          'button-disabled': registerForm.invalid,
+          'button-available': registerForm.valid
+        }"
+      >
+        Sign up
+      </button>
+    </div>
+  </form>
+</div>

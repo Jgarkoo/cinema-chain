@@ -1,0 +1,28 @@
+<div class="now-playing">
+  <div class="now-playing-header">
+    <h2>
+      NOW PLAYING
+    </h2>
+    <a>See all</a>
+  </div>
+  <div class="now-playing-movies">
+    @for (movie of previewMovies(); track movie.id; let index = $index) {
+      <div class="now-Playing-Movies" [class.preview-fade]="index === 4">
+        <img [src]="movie.backdropUrl" [alt]="movie.title">
+        <h3>{{ movie.title }}</h3>
+        <p>Thriller • {{ movie.runtimeMinutes }} Min</p>
+        <p class="age-rating">
+            {{ movie.ageRating.minAge}}
+        </p>
+        <div class="movie-price">
+          <p>
+            From ₾ {{movie.fromPrice}}
+          </p>
+          <button>
+              Buy Ticket
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

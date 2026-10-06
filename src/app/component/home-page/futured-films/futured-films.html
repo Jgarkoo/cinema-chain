@@ -1,0 +1,75 @@
+@if (currentMovie(); as movie) {
+  <div class="movie-slide">
+    <img
+      class="movie-backdrop"
+      [src]="movie.backdropUrl"
+      [alt]="movie.title"
+    >
+    <div class="movie-overlay"></div>
+    <div class="movie-content">
+        <span class="movie-premiere">
+          PREMIERE · WEEK OF 15 SEPT
+        </span>
+      <h1>
+        {{ movie.title }}
+      </h1>
+      <div class="movie-info">
+          <span class="age-rating">
+            {{ movie.ageRating.minAge}}
+          </span>
+        <span class="runtime">
+            ◷ {{ movie.runtimeMinutes }} Min
+          </span>
+        @for (format of movie.formats; track format.id) {
+          <span class="format">
+              {{ format.name }}
+            </span>
+        }
+      </div>
+      <p class="movie-description">
+        {{ movie.synopsis }}
+      </p>
+      <div class="movie-buttons">
+        <button class="buy-button">
+          <span>✦</span>
+          Buy tickets
+        </button>
+        <button class="sessions-button">
+          All sessions
+        </button>
+      </div>
+    </div>
+    <div class="slide-navigation">
+      <div class="slide-progress">
+        @for (
+          movieItem of futuredMovies();
+          track movieItem.id;
+          let index = $index
+          ) {
+          <button
+            class="progress-item"
+            [class.active]="index === futuredMovieIndex()"
+            (click)="changeMovie(index)"
+            [attr.aria-label]="'Show ' + movieItem.title"
+          ></button>
+        }
+      </div>
+      <div class="arrow-buttons">
+        <button
+          class="arrow-button"
+          (click)="previousMovie()"
+          aria-label="Previous movie"
+        >
+          ‹
+        </button>
+        <button
+          class="arrow-button"
+          (click)="nextMovie()"
+          aria-label="Next movie"
+        >
+          ›
+        </button>
+      </div>
+    </div>
+  </div>
+}

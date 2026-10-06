@@ -1,0 +1,105 @@
+.now-playing {
+  width: 100%;
+  .now-playing-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    a {
+      text-decoration: none;
+      color: #ec3013;
+      cursor: pointer;
+      &:hover {
+        color: #b5250f;
+        transition: 0.2s ease;
+      }
+    }
+  }
+  .now-playing-movies {
+    display: flex;
+    flex-wrap: nowrap;
+    position: relative;
+    width: min(100%, 1318px);
+    margin-top: 25px;
+    gap: 20px;
+    .now-Playing-Movies {
+      position: relative;
+      flex: 0 0 275px;
+      height: 452px;
+      color: #ffffff;
+      padding: 12px;
+      background-color: #1E2031;
+      border-radius: 20px;
+      box-sizing: border-box;
+      overflow: hidden;
+      &.preview-fade {
+        pointer-events: none;
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 1px;
+          width: 170px;
+          background: linear-gradient(
+            to right,
+            rgba(7, 12, 28, 0),
+            #070c1c 72%
+          );
+        }
+      }
+      img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 15px;
+      }
+      h3 {
+        margin: 12px 0 6px;
+        font-size: 16px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      p {
+        font-size: 12px;
+        margin: 0;
+        color: #a7adba;
+      }
+      .age-rating {
+        font-size: 12px;
+        margin-top: 10px;
+        background-color: rgba(236, 48, 19, 0.12);
+        color: #ec3013;
+        padding: 2px 8px;
+        border-radius: 10px;
+        text-align: center;
+        width: 30px;
+      }
+      .movie-price {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        p {
+          font-size: 12px;
+          margin: 0;
+          color: white;
+        }
+        button {
+          background-color: #EC3013;
+          color: white;
+          border: none;
+          border-radius: 20px;
+          padding: 8px 20px;
+          cursor: pointer;
+          &:hover {
+            background-color: #b3210d;
+            transition: background-color 0.3s ease;
+          }
+        }
+      }
+    }
+  }
+}

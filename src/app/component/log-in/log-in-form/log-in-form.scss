@@ -1,0 +1,123 @@
+.log-in-formField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #070C1C;
+  border-radius: 30px;
+  border: 1px solid #1E2031;
+  padding: 32px;
+  width: 403px;
+  height: 399px;
+  .top-field {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: white;
+    width: 100%;
+    .leftSide {
+      p {
+        margin-top: 10px;
+        font-size: 12px;
+        color: grey;
+      }
+    }
+    #close-button {
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+    }
+  }
+  .bottom-field {
+    width: 100%;
+    margin-top: 10px;
+    .email-pasw-field {
+      display: flex;
+      flex-direction: column;
+      .email-input,
+      .password-input {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        span {
+          color: #EC3013;
+          font-size: 12px;
+        }
+        #check,
+        #error {
+          position: absolute;
+          left: 300px;
+          top: 45px;
+        }
+      }
+      input {
+        border-radius: 15px;
+        padding: 12px;
+        background-color: #1E2031;
+        margin: 10px 0px;
+      }
+      label {
+        margin-top: 10px;
+        font-size: 12px;
+      }
+    }
+    .login-signup-button {
+      width: 100%;
+      margin-top: 20px;
+      button {
+        border-style: none;
+        width: 100%;
+        padding: 12px;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      p {
+        color: #A9A9A9;
+        margin: 15px 0px 0px 65px;
+        font-size: 14px;
+        a {
+          text-decoration: none;
+          color: #EC3013;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.default-status {
+  border-color: transparent;
+}
+
+.invalid-status {
+  border: 1px solid #EC3013;
+  color: #EC3013;
+}
+
+.valid-status {
+  border: 1px solid transparent;
+  color: white;
+}
+
+.default-label-status {
+  color: white;
+}
+
+.invalid-label-status {
+  color: #EC3013;
+}
+
+.valid-label-status {
+  color: white;
+}
+
+.button-disabled {
+  background-color: #505261;
+  color: #A9A9A9;
+}
+
+.button-available {
+  background-color: #EC3013;
+  color: white;
+}

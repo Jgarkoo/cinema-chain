@@ -1,0 +1,32 @@
+.container {
+  background-color: #040710;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  .login-formField,
+  .signup-formField {
+    position: relative;
+    p {
+      color: #A9A9A9;
+      margin: 15px 0px 0px 65px;
+      font-size: 14px;
+      position: absolute;
+      bottom: 30px;
+      left: 35px;
+      cursor: pointer;
+      a {
+        text-decoration: none;
+        color: #EC3013;
+        font-weight: bold;
+      }
+    }
+  }
+  .signup-formField {
+    p{
+      bottom: 20px;
+      left: 60px;
+    }
+  }
+}

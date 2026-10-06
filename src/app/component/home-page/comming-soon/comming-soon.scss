@@ -1,0 +1,95 @@
+.comming-soon {
+  font-family: Arial, sans-serif;
+  .comming-soon-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    h2 {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    a {
+      text-decoration: none;
+      color: #ec3013;
+      cursor: pointer;
+      &:hover {
+        color: #b5250f;
+        transition: 0.2s ease;
+      }
+    }
+  }
+  .comming-soon-movies {
+    display: flex;
+    flex-wrap: nowrap;
+    position: relative;
+    width: min(100%, 1450px);
+    margin-top: 25px;
+    gap: 15px;
+    .comming-Soon-Movie {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      flex: 0 0 430px;
+      height: 170px;
+      color: #ffffff;
+      padding: 10px;
+      background-color: #1E2031;
+      border-radius: 20px;
+      box-sizing: border-box;
+      overflow: hidden;
+      &.comming-Soon-Fade {
+        pointer-events: none;
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 240px;
+          bottom: 0;
+          width: 170px;
+          background: linear-gradient(
+            to right,
+            rgba(7, 12, 28, 0),
+            #070c1c 72%
+          );
+        }
+      }
+      img {
+        width: 229px;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+      }
+      .movie-descript {
+        margin-left: 15px;
+        h1 {
+          font-size: 12px;
+          color: #ec3013;
+          margin-top: 15px;
+        }
+        h3 {
+          margin: 12px 0;
+          font-size: 16px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        p {
+          font-size: 12px;
+          margin: 0;
+          color: #a7adba;
+        }
+        .age-rating {
+          font-size: 12px;
+          margin: 10px 0;
+          background-color: rgba(236, 48, 19, 0.12);
+          color: #ec3013;
+          padding: 2px 8px;
+          border-radius: 10px;
+          text-align: center;
+          width: 30px;
+        }
+      }
+    }
+  }
+}
