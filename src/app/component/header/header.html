@@ -1,0 +1,132 @@
+<div class="header-div">
+  <div class="logo-section">
+    <a>
+      <img src="/img/Frame.png" alt="Kino XII" [routerLink]="['/home-page']">
+      <span [routerLink]="['/session']">SESSIONS</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <div class="search-bar">
+        <span class="search-icon">
+          <svg fill="#ffffff" width="12px" height="12px" viewBox="0 -0.24 28.423 28.423"
+               id="_02_-_Search_Button" data-name="02 - Search Button"
+               xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier"> <path id="Path_215" data-name="Path 215" d="M14.953
+            ,2.547A12.643,12.643,0,1,0,27.6,15.19,12.649,12.649,0,0,0,14.953,2.547Zm0,2A10.643,
+            10.643,0,1,1,4.31,15.19,10.648,10.648,0,0,1,
+            14.953,4.547Z" transform="translate(-2.31 -2.547)"fill-rule="evenodd"></path>
+              <path id="Path_216" data-name="Path 216" d="M30.441,28.789l-6.276-6.276a1,
+              1,0,1,0-1.414,1.414L29.027,30.2a1,1,
+              0,1,0,1.414-1.414Z" transform="translate(-2.31 -2.547)" fill-rule="evenodd"></path></g>
+          </svg>
+        </span>
+      <input
+        type="text"
+        placeholder="Search films and live events"
+      >
+    </div>
+    <!-- avatar: picture if the user has one, otherwise initials -->
+    <ng-template #avatarTpl>
+  <span class="avatar">
+    @if (user()?.avatar && !avatarFailed()) {
+      <img [src]="user()?.avatar" alt="" (error)="avatarFailed.set(true)">
+    } @else {
+      <span class="initials">{{ initials() }}</span>
+    }
+    <span class="status-dot" [class.complete]="user()?.profileComplete"></span>
+  </span>
+    </ng-template>
+
+    @if (auth.loggedIn()) {
+      <div class="user-menu">
+        <button type="button" class="user-trigger" (click)="toggleMenu()"
+                [attr.aria-expanded]="menuOpen()">
+          <ng-container *ngTemplateOutlet="avatarTpl"></ng-container>
+          <span class="user-name">{{ firstName() }}</span>
+          <svg class="chevron" [class.open]="menuOpen()" width="12" height="12" viewBox="0 0 12 12"
+               fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"
+               stroke-linejoin="round">
+            <path d="M2 4.5l4 4 4-4"/>
+          </svg>
+        </button>
+
+        @if (menuOpen()) {
+          <div class="dropdown">
+            <div class="dropdown-user">
+              <ng-container *ngTemplateOutlet="avatarTpl"></ng-container>
+              <div class="dropdown-user-info">
+                <strong>{{ user()?.fullName || user()?.username }}</strong>
+                <span>{{ user()?.email }}</span>
+              </div>
+            </div>
+
+            @if (user()?.profileComplete) {
+              <div class="profile-status complete">
+                <p>Profile Complete &#10003;</p>
+              </div>
+            } @else {
+              <div class="profile-status incomplete">
+                <p class="status-title">Profile incomplete</p>
+                <p class="status-text">Please complete your profile to enable booking</p>
+              </div>
+            }
+
+            <a class="menu-item" routerLink="/profile" (click)="closeMenu()">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff"
+                   stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="5" r="3"/>
+                <path d="M2 14c0-3 2.5-4.5 6-4.5s6 1.5 6 4.5"/></svg>
+              My Profile
+            </a>
+            <a class="menu-item" routerLink="/my-tickets" (click)="closeMenu()">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff"
+                   stroke-width="1.5" stroke-linejoin="round">
+                <path d="M1.5 5.5a1.5 1.5 0 0 0 0 3v2.5h13V8.5a1.5 1.5 0 0 1 0-3V3h-13z"/></svg>
+              My Tickets
+            </a>
+
+            <div class="divider"></div>
+
+            <button type="button" class="menu-item logout" (click)="logout()">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#ec3013"
+                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2H3v12h3M10 5l3 3-3 3M13 8H6"/></svg>
+              Log out
+            </button>
+          </div>
+        }
+      </div>
+    } @else {
+      <button class="sign-up-button" type="button" (click)="openAuthModal('register')">
+        Sign up
+      </button>
+      <button class="log-in-button" type="button" (click)="openAuthModal('login')">
+        Log in
+      </button>
+    }
+  </div>
+</div>
+@if (authModalIsOpen) {
+  <div class="auth-modal-backdrop" (click)="closeAuthModal()">
+    <div class="auth-modal-content" (click)="$event.stopPropagation()">
+      @if (authMode === 'login') {
+        <div class="auth-form-shell">
+          <app-log-in-form (closeForm)="closeAuthModal()"></app-log-in-form>
+          <p>
+            Don't have an account?
+            <button type="button" (click)="showRegister()">Sign up</button>
+          </p>
+        </div>
+      } @else {
+        <div class="auth-form-shell auth-form-shell-register">
+          <app-register-form (closeForm)="closeAuthModal()"></app-register-form>
+          <p>
+            Already have an account?
+            <button type="button" (click)="showLogin()">Log in</button>
+          </p>
+        </div>
+      }
+    </div>
+  </div>
+}

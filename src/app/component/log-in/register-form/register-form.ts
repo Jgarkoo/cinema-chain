@@ -1,17 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { ReactiveFormsModule, FormControl, Validators, FormGroup, AbstractControl, ValidationErrors } from '@angular/forms';
 import { NgClass } from '@angular/common';
 import { LogInOut } from '../../../service/log-in-out/log-in-out';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({
-  imports: [ReactiveFormsModule, NgClass, RouterLink],
+  imports: [ReactiveFormsModule, NgClass],
   selector: 'app-register-form',
   styleUrl: './register-form.scss',
   templateUrl: './register-form.html',
 })
 export class RegisterForm {
+  @Output() closeForm = new EventEmitter<void>();
+
   private regService = inject(LogInOut);
   private router = inject(Router);
 
@@ -50,7 +52,6 @@ export class RegisterForm {
 
     this.regService.signUp(fd).subscribe({
       next: () => {
-        this.regService.loginGuard();
         this.registerForm.reset();
         this.router.navigate(['/logged-in-home-page']);
       },

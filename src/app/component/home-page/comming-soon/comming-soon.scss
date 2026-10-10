@@ -89,6 +89,34 @@
           text-align: center;
           width: 30px;
         }
+        .notify-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          height: 32px;
+          padding: 0 16px;
+          border: 1px solid rgba(255, 255, 255, 0.6);
+          border-radius: 16px;
+          background: transparent;
+          color: #ffffff;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: 0.2s ease;
+          &:hover:not(:disabled) {
+            background: #ffffff;
+            color: #171923;
+          }
+          &:disabled {
+            opacity: 0.6;
+            cursor: default;
+          }
+          &.notified {
+            border-color: #4ade80;
+            color: #4ade80;
+            cursor: default;
+          }
+        }
       }
     }
   }

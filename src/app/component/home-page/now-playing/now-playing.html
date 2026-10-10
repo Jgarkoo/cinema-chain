@@ -3,7 +3,7 @@
     <h2>
       NOW PLAYING
     </h2>
-    <a>See all</a>
+    <a [routerLink]="['/now-playing-movies']">See all</a>
   </div>
   <div class="now-playing-movies">
     @for (movie of previewMovies(); track movie.id; let index = $index) {

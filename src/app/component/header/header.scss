@@ -1,0 +1,269 @@
+.header-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  .logo-section {
+    a {
+      text-decoration: none;
+      color: white;
+      display: flex;
+      align-items: flex-end;
+      gap: 30px;
+      img {
+        cursor: pointer;
+        height: auto;
+      }
+      span {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+      }
+    }
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .search-bar {
+      width: 480px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 20px;
+      background-color: rgba(100, 108, 130, 0.55);
+      box-sizing: border-box;
+      .search-icon {
+        margin-right: 7px;
+        color: white;
+      }
+      input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: white;
+        &::placeholder {
+          color: #d2d4dc;
+        }
+      }
+    }
+    button {
+      height: 40px;
+      padding: 0 20px;
+      border: none;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .sign-up-button {
+      background-color: #ec3013;
+      color: white;
+      &:hover {
+        background-color: white;
+        color: #ec3013;
+      }
+    }
+    .log-in-button {
+      background-color: white;
+      color: #171923;
+      transition: 0.3s;
+      &:hover {
+        background-color: #171923;
+        color: white;
+        transition: 0.3s;
+      }
+    }
+    .user-menu {
+      position: relative;
+      .user-trigger {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: auto;
+        padding: 0;
+        background: transparent;
+        color: white;
+        border-radius: 0;
+        .user-name { font-weight: 600; }
+        .chevron { transition: transform 0.2s; margin-left: 6px; }
+        .chevron.open { transform: rotate(180deg); }
+      }
+      .avatar {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: #20233a;
+        flex-shrink: 0;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+        .initials { color: white; font-weight: 700; font-size: 13px; }
+        .status-dot {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 10px;
+          height: 9px;
+          border-radius: 50%;
+          background: #e58a00;
+          border: 2px solid #20233a;
+          &.complete { background: #22c55e; }
+        }
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 52px;
+        right: 0;
+        width: 270px;
+        padding: 14px;
+        border-radius: 14px;
+        background: #0a0f1f;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+        z-index: 50;
+
+        .dropdown-user {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 14px;
+
+          .avatar { width: 48px; height: 48px; }
+          .dropdown-user-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            strong { color: white; font-size: 14px; }
+            span {
+              color: #9aa0b4;
+              font-size: 12px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+
+        .profile-status {
+          padding: 10px 12px;
+          border-radius: 8px;
+          margin-bottom: 8px;
+          p { margin: 0; }
+
+          &.incomplete {
+            background: rgba(229, 138, 0, 0.12);
+            .status-title { color: #e58a00; font-weight: 600; font-size: 14px; }
+            .status-text { color: #b8b0a2; font-size: 12px; margin-top: 2px; }
+          }
+          &.complete {
+            background: rgba(34, 197, 94, 0.12);
+            p { color: #4ade80; font-weight: 600; font-size: 14px; }
+          }
+        }
+
+        .menu-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          width: 100%;
+          height: auto;
+          padding: 12px 8px;
+          border-radius: 8px;
+          background: transparent;
+          color: white;
+          font-size: 14px;
+          font-weight: 600;
+          text-decoration: none;
+          text-align: left;
+          cursor: pointer;
+          &:hover { background: rgba(255, 255, 255, 0.06); }
+          &.logout { color: #ec3013; }
+        }
+
+        .divider {
+          height: 1px;
+          margin: 6px 0;
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+  }
+}
+
+.auth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-color: rgba(3, 7, 18, 0.58);
+  backdrop-filter: blur(8px);
+  box-sizing: border-box;
+}
+
+.auth-modal-content {
+  max-width: 100%;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+
+.auth-form-shell {
+  position: relative;
+
+  > p {
+    position: absolute;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100% - 64px);
+    margin: 0;
+    color: #A9A9A9;
+    font-size: 14px;
+
+    button {
+      height: auto;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      color: #EC3013;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  }
+}
+
+.auth-form-shell-register {
+  > p {
+    bottom: 20px;
+  }
+}
+
+@media (max-width: 700px) {
+  .header-div {
+    .header-right {
+      .search-bar {
+        display: none;
+      }
+    }
+  }
+
+  .auth-modal-backdrop {
+    align-items: flex-start;
+    padding: 80px 16px 24px;
+  }
+}

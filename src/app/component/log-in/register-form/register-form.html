@@ -4,9 +4,9 @@
       <h2>Sign up</h2>
       <p>Welcome to Kino XII</p>
     </div>
-    <a id="close-button" [routerLink]="['/home-page']">
+    <button id="close-button" type="button" (click)="closeForm.emit()">
       &#x2715;
-    </a>
+    </button>
   </div>
   <form class="bottom-field" [formGroup]="registerForm" (ngSubmit)="register()">
     <div class="avatar-field">

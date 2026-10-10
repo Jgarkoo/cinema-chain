@@ -1,0 +1,14 @@
+.footer-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-top: 1px solid #2a2c3d;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  width: 96%;
+  padding-top: 30px;
+  p {
+    color: #A9A9A9;
+  }
+}

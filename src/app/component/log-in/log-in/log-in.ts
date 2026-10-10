@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LogInForm } from '../log-in-form/log-in-form';
 import { RegisterForm } from '../register-form/register-form';
 
@@ -11,6 +11,7 @@ import { RegisterForm } from '../register-form/register-form';
 })
 export class LogIn {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   showLogin = true;
 
@@ -26,5 +27,9 @@ export class LogIn {
 
   showLoginForm(): void {
     this.showLogin = true;
+  }
+
+  closeAuthPage(): void {
+    this.router.navigate(['/home-page']);
   }
 }

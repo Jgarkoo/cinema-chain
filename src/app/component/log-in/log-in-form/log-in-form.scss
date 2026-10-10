@@ -22,6 +22,8 @@
       }
     }
     #close-button {
+      background: transparent;
+      border: none;
       cursor: pointer;
       text-decoration: none;
       color: white;
@@ -55,6 +57,7 @@
         padding: 12px;
         background-color: #1E2031;
         margin: 10px 0px;
+        color: white;
       }
       label {
         margin-top: 10px;

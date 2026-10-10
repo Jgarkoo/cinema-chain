@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { FuturedFilms } from '../futured-films/futured-films';
 import { NowPlaying } from '../now-playing/now-playing';
 import { CommingSoon } from '../comming-soon/comming-soon';
+import { Footer } from '../../footer/footer';
+import { Header } from '../../header/header';
 
 @Component({
-  imports: [RouterLink, FuturedFilms, NowPlaying, CommingSoon],
+  imports: [FuturedFilms, NowPlaying, CommingSoon, Footer, Header],
   selector: 'app-notloged-in-homepage',
   styleUrl: './notloged-in-homepage.scss',
   templateUrl: './notloged-in-homepage.html',

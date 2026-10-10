@@ -1,7 +1,7 @@
 <div class="container">
   @if (showLogin) {
     <div class="login-formField">
-      <app-log-in-form></app-log-in-form>
+      <app-log-in-form (closeForm)="closeAuthPage()"></app-log-in-form>
       <p>
         Don't have an account?
         <a (click)="showRegister()">Sign up</a>
@@ -10,7 +10,7 @@
   }
   @else {
     <div class="signup-formField">
-      <app-register-form></app-register-form>
+      <app-register-form (closeForm)="closeAuthPage()"></app-register-form>
       <p>
         Already have an account?
         <a (click)="showLoginForm()">Log in</a>

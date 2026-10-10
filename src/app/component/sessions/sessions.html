@@ -1,0 +1,134 @@
+<div class="session-container">
+  <header>
+    <app-header class="header-app"></app-header>
+  </header>
+  <div class="session-main">
+    <div class="session-filter">
+        <h1>
+          Sessions
+        </h1>
+      <span>
+        Browse showtimes across all venues
+      </span>
+      <div class="filter-movies">
+          <h2>
+            Filters
+          </h2>
+        @if (filterMovies(); as options) {
+          <aside class="filters">
+            <div class="venue -filter-All">
+              <p>Venue</p>
+              <div class="venue-filter -filter">
+                @for (venue of options.venues; track venue.id) {
+                  <label class="venue-item -item">
+                    <input type="checkbox"
+                           class="check-box"
+                           #box
+                           [checked]="selectedVenues().includes(venue.id)"
+                           (change)="toggleVenue(venue.id, box.checked)"
+                           [value]="venue.id" />
+                    <span class="name">{{ venue.name }}</span>
+                    <span class="city">· {{ venue.city }}</span>
+                  </label>
+                }
+              </div>
+            </div>
+            <div class="ageRating -filter-All">
+              <p>
+                AGE RATING
+              </p>
+              <div class="ageRating-filter -filter">
+                @for(ageRate of options.ageRatings; track ageRate.id){
+                  <label class="ageRating-item -item">
+                    <input type="checkbox"
+                           class="check-box"
+                           [value]="ageRate.id"
+                           #box
+                           [checked]="selectedAgeRating().includes(ageRate.id)"
+                           (change)="toggleAgeRating(ageRate.id, box.checked)"
+                    />
+                    <span class="name">{{ ageRate.minAge }}</span>
+                  </label>
+                }
+              </div>
+            </div>
+            <div class="format -filter-All">
+              <p>
+                FORMAT
+              </p>
+              @if(filterMovies(); as options){
+                <div class="format-filter -filter">
+                  @for(format of options.formats; track format.id){
+                    <label class="format-item -item">
+                      <input type="checkbox"
+                             class="check-box"
+                             [value]="format.id"
+                             #box
+                             [checked]="selectedFormats().includes(format.id)"
+                             (change)="toggleFormats(format.id, box.checked)"
+                      />
+                      <span class="name">{{ format.name }}</span>
+                    </label>
+                  }
+                </div>
+              }
+            </div>
+            <div class="language -filter-All">
+              <p>
+                LANGUAGE
+              </p>
+              @if(filterMovies(); as options){
+                <div class="language-filter -filter">
+                  @for(lang of options.languages; track lang.id){
+                    <label class="language-item -item">
+                      <input type="checkbox"
+                             class="check-box"
+                             [value]="lang.id"
+                             #box
+                             [checked]="selectedLanguage().includes(lang.id)"
+                             (change)="toggleLanguage(lang.id, box.checked)"
+                      />
+                      <span class="name">{{ lang.name }}</span>
+                    </label>
+                  }
+                </div>
+              }
+            </div>
+            <div class="timeOfDay -filter-All">
+              <p>
+                TIME OF DAY
+              </p>
+              @if(filterMovies(); as options){
+                <div class="time-Of-Day-filter -filter">
+                  @for(tod of options.timeBands; track tod.id){
+                    <label class="time-Of-Day-item -item">
+                      <input type="checkbox"
+                             class="check-box"
+                             [value]="tod.id"
+                             #box
+                             [checked]="selectedTimeOfDay().includes(tod.id)"
+                             (change)="toggleTimeOfDay(tod.id, box.checked)"
+                      />
+                      <span class="name">{{ tod.id }}</span>
+                      <span class="city">· {{ tod.label }}</span>
+                    </label>
+                  }
+                </div>
+              }
+            </div>
+            <div class="filters-counter">
+                <span>
+                  {{ activeFiltersCount() }}
+                  {{ activeFiltersCount() === 1 ? 'filter' : 'filters' }} applied
+                </span>
+
+              @if (activeFiltersCount() > 0) {
+                <button type="button" (click)="clearFilters()">Clear</button>
+              }
+            </div>
+          </aside>
+        }
+      </div>
+    </div>
+  </div>
+</div>

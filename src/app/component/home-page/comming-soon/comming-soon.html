@@ -3,12 +3,12 @@
     <h2>
       COMMING SOON...
     </h2>
-    <a>
+    <a [routerLink]="['/coming-soon-movies']">
       See all
     </a>
   </div>
   <div class="comming-soon-movies">
-    @for (movie of commingsoonMovies(); track movie.id; let index = $index) {
+    @for (movie of comingsoonMovies(); track movie.id; let index = $index) {
       <div class="comming-Soon-Movie" [class.comming-Soon-Fade]="index === 3">
         <img [src]="movie.backdropUrl" [alt]="movie.title">
         <div class="movie-descript">
@@ -18,6 +18,20 @@
           <p class="age-rating">
             {{ movie.ageRating.minAge}}
           </p>
+          <button
+            type="button"
+            class="notify-btn"
+            [class.notified]="isNotified(movie)"
+            [disabled]="isPending(movie)"
+            (click)="notify(movie)"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+            </svg>
+            {{ isNotified(movie) ? "We'll notify you" : 'Notify Me' }}
+          </button>
         </div>
       </div>
     }
