@@ -24,8 +24,8 @@ export class MyTickets {
   refundingId = signal<number | null>(null);
   errorMessage = signal<string | null>(null);
 
-  isRefundable(ticket: Ticket): boolean {
-    return new Date(ticket.refundableUntil).getTime() > Date.now();
+  canRefund(order: Ticket): boolean {
+    return order.isRefundable && order.status === 'paid';
   }
 
   refund(ticket: Ticket): void {

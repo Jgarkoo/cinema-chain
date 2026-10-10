@@ -17,36 +17,36 @@
   } @else if (!visible().length) {
     <p class="empty">{{ filter() === 'upcoming' ? 'No upcoming tickets' : 'No past tickets' }}</p>
   } @else {
-    @for (ticket of visible(); track ticket.id) {
+    @for (order of visible(); track order.id) {
       <article class="ticket">
-        <img class="poster" [src]="ticket.movie.posterUrl" [alt]="ticket.movie.title">
+        <img class="poster" [src]="order.session.movie.posterUrl" [alt]="order.session.movie.title">
 
         <div class="details">
           <div class="title-row">
-            <h3>{{ ticket.movie.title }}</h3>
-            <span class="age">{{ ticket.movie.ageRating.minAge }}+</span>
-            <span class="runtime">{{ ticket.movie.runtimeMinutes }} min</span>
+            <h3>{{ order.session.movie.title }}</h3>
+            <span class="age">{{ order.session.movie.ageRating.minAge }}+</span>
+            <span class="runtime">{{ order.session.movie.runtimeMinutes }} min</span>
           </div>
 
           <div class="meta">
             <div>
               <span class="label">Date</span>
-              <strong>{{ ticket.startsAt | date: 'EEE d MMM · HH:mm' }}</strong>
+              <strong>{{ order.session.date | date: 'EEE d MMM' }} · {{ order.session.time }}</strong>
             </div>
             <div>
               <span class="label">Venue</span>
-              <strong>{{ ticket.venue.name }} · {{ ticket.hall }}</strong>
+              <strong>{{ order.session.venue.name }} · Hall {{ order.session.hall.name }}</strong>
             </div>
             <div>
               <span class="label">Format</span>
-              <strong>{{ ticket.format }} · {{ ticket.language }}</strong>
+              <strong>{{ order.session.format.name }} · {{ order.session.language.name }}</strong>
             </div>
           </div>
 
           <div class="seats">
             <span class="label">Seats</span>
-            @for (seat of ticket.seats; track seat.label) {
-              <span class="seat">{{ seat.label }} · {{ seat.type }}</span>
+            @for (seat of order.tickets; track seat.id) {
+              <span class="seat">{{ seat.seatCode }} · {{ seat.ticketType.name }}</span>
             }
           </div>
         </div>
@@ -54,26 +54,22 @@
         <div class="order">
           <div>
             <span class="label">Order</span>
-            <strong>#{{ ticket.orderNumber }}</strong>
+            <strong>#{{ order.reference }}</strong>
           </div>
           <div class="paid">
             <span>Total paid</span>
-            <strong>₾{{ ticket.totalPaid }}</strong>
+            <strong>₾{{ order.totalPrice }}</strong>
           </div>
 
-          @if (filter() === 'upcoming') {
+          @if (order.status === 'refunded') {
+            <span class="refunded-badge">Refunded</span>
+          } @else if (filter() === 'upcoming') {
             <button type="button" class="refund"
-                    [disabled]="!isRefundable(ticket) || refundingId() === ticket.id"
-                    (click)="refund(ticket)">
-              {{ refundingId() === ticket.id ? 'Refunding…' : 'Refund' }}
+                    [disabled]="!canRefund(order) || refundingId() === order.id"
+                    (click)="refund(order)">
+              {{ refundingId() === order.id ? 'Refunding…' : 'Refund' }}
             </button>
-            <p class="refund-note">
-              @if (isRefundable(ticket)) {
-                Refundable until {{ ticket.refundableUntil | date: 'HH:mm, EEE d MMM' }}
-              } @else {
-                Refund period has ended
-              }
-            </p>
+            <p class="refund-note">{{ order.isRefundable ? 'Refundable' : 'No longer refundable' }}</p>
           }
         </div>
       </article>

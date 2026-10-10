@@ -1,25 +1,36 @@
-export interface TicketSeat {
-  label: string;
-  type: string;
+import { Session } from './session';
+
+export interface TicketContact {
+  fullName: string;
+  email: string;
+  mobileNumber: string;
+}
+
+export interface TicketType {
+  slug: string;
+  name: string;
+}
+
+export interface TicketItem {
+  id: number;
+  seatCode: string;
+  ticketType: TicketType;
+  price: number;
 }
 
 export interface Ticket {
   id: number;
-  orderNumber: string;
-  movie: {
-    title: string;
-    posterUrl: string;
-    runtimeMinutes: number;
-    ageRating: { minAge: number };
-  };
-  startsAt: string;
-  venue: { name: string };
-  hall: string;
-  format: string;
-  language: string;
-  seats: TicketSeat[];
-  totalPaid: number;
-  refundableUntil: string;
+  reference: string;
+  status: string;
+  totalPrice: number;
+  paidAt: string;
+  refundedAt: string;
+  isUpcoming: boolean;
+  isRefundable: boolean;
+  cardLastFour: string;
+  contact: TicketContact;
+  session: Session;
+  tickets: TicketItem[];
 }
 
 export interface TicketsResponse {

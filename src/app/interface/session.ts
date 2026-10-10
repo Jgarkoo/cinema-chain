@@ -1,17 +1,19 @@
 import { Format, Venue, Language } from './filter';
 import { Movie } from './movie';
+import { Hall } from './hall';
 
 export interface Session {
-  id: string
-  startsAt: string
-  date: string
-  time: string
-  timeBand: string
-  price: string
-  seatsLeft: string
-  isSoldOut: boolean
-  venue: Venue[];
-  format: Format[];
-  language: Language[];
-  movie: Movie[];
+  id: number;
+  startsAt: string;
+  date: string;
+  time: string;
+  timeBand: string;
+  price: number;
+  seatsLeft: number;
+  isSoldOut: boolean;
+  venue: Venue;
+  format: Format;
+  language: Language;
+  movie: Movie;
+  hall: Hall;
 }

@@ -14,13 +14,17 @@ export class Tickets {
 
   readonly upcoming = computed(() =>
     this.tickets()
-      .filter((t) => new Date(t.startsAt).getTime() >= Date.now())
-      .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()),
+      .filter((t) => t.isUpcoming)
+      .sort(
+        (a, b) => new Date(a.session.startsAt).getTime() - new Date(b.session.startsAt).getTime(),
+      ),
   );
   readonly past = computed(() =>
     this.tickets()
-      .filter((t) => new Date(t.startsAt).getTime() < Date.now())
-      .sort((a, b) => new Date(b.startsAt).getTime() - new Date(a.startsAt).getTime()),
+      .filter((t) => !t.isUpcoming)
+      .sort(
+        (a, b) => new Date(b.session.startsAt).getTime() - new Date(a.session.startsAt).getTime(),
+      ),
   );
   readonly upcomingCount = computed(() => this.upcoming().length);
 
