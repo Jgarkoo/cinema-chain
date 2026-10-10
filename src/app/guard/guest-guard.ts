@@ -4,12 +4,8 @@ import { LogInOut } from '../service/log-in-out/log-in-out';
 
 export const guestGuard: CanActivateFn = () => {
 
-  const loginService = inject(LogInOut);
+  const auth = inject(LogInOut);
   const router = inject(Router);
+  return auth.loggedIn() ? router.createUrlTree(['/logged-in-home-page']) : true;
 
-  if (loginService.isLoggedIn()) {
-    return router.createUrlTree(['/logged-in-home-page']);
-  }
-
-  return true;
 };

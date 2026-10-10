@@ -3,5 +3,5 @@ export interface SignUp {
   email: string;
   password: string;
   password_confirmation: string;
-  avatar:string;
+  avatar?:string | null;
 }

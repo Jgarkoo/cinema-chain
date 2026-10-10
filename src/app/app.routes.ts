@@ -9,23 +9,38 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    title: 'Home Page',
+    title: 'Home-Page',
     path: 'home-page',
     loadComponent: () =>
-      import('./component/home-page/notloged-in-homepage/notloged-in-homepage').then((m) => m.NotlogedInHomepage),
-    // canActivate: [guestGuard],
+      import('./component/home-page/notloged-in-homepage/notloged-in-homepage').then(
+        (m) => m.NotlogedInHomepage,
+      ),
+    canActivate: [guestGuard],
   },
   {
-    title: 'Log in Page',
-    path: 'log-in',
-    loadComponent: () => import('./component/log-in/log-in/log-in').then((m) => m.LogIn),
-    // canActivate: [guestGuard],
+    title: 'Now Playing Movies',
+    path: 'now-playing-movies',
+    loadComponent: () =>
+      import('./component/see-all-now-playing/see-all-now-playing').then((m) => m.SeeAllNowPlaying),
+  },
+  {
+    title: 'Coming Soon Movies',
+    path: 'coming-soon-movies',
+    loadComponent: () =>
+      import('./component/see-all-comming-soon/see-all-comming-soon').then((m) => m.SeeAllCommingSoon),
+  },
+  {
+    title: 'session',
+    path: 'session',
+    loadComponent: () => import('./component/sessions/sessions').then((m) => m.Sessions),
   },
   {
     title: 'Home Page',
     path: 'logged-in-home-page',
     loadComponent: () =>
-      import('./component/home-page/loged-in-homepage/loged-in-homepage').then((m) => m.LogedInHomepage),
-    // canActivate: [logInGuard],
+      import('./component/home-page/loged-in-homepage/loged-in-homepage').then(
+        (m) => m.LogedInHomepage,
+      ),
+    canActivate: [logInGuard],
   },
 ];
