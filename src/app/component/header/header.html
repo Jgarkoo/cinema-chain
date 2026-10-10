@@ -68,7 +68,6 @@
     <span class="status-dot" [class.complete]="user()?.profileComplete"></span>
   </span>
     </ng-template>
-
     @if (auth.loggedIn()) {
       <div class="user-menu">
         <button type="button" class="user-trigger" (click)="toggleMenu()"
@@ -81,7 +80,6 @@
             <path d="M2 4.5l4 4 4-4"/>
           </svg>
         </button>
-
         @if (menuOpen()) {
           <div class="dropdown">
             <div class="dropdown-user">
@@ -91,7 +89,6 @@
                 <span>{{ user()?.email }}</span>
               </div>
             </div>
-
             @if (user()?.profileComplete) {
               <div class="profile-status complete">
                 <p>Profile Complete &#10003;</p>
@@ -102,22 +99,19 @@
                 <p class="status-text">Please complete your profile to enable booking</p>
               </div>
             }
-
-            <a class="menu-item" routerLink="/profile" (click)="closeMenu()">
+            <a class="menu-item" [routerLink]="['/profile']" [queryParams]="{ tab: 'info' }" (click)="closeMenu()">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff"
                    stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="5" r="3"/>
                 <path d="M2 14c0-3 2.5-4.5 6-4.5s6 1.5 6 4.5"/></svg>
               My Profile
             </a>
-            <a class="menu-item" routerLink="/my-tickets" (click)="closeMenu()">
+            <a class="menu-item" [routerLink]="['/profile']" [queryParams]="{ tab: 'tickets' }" (click)="closeMenu()">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff"
                    stroke-width="1.5" stroke-linejoin="round">
                 <path d="M1.5 5.5a1.5 1.5 0 0 0 0 3v2.5h13V8.5a1.5 1.5 0 0 1 0-3V3h-13z"/></svg>
               My Tickets
             </a>
-
             <div class="divider"></div>
-
             <button type="button" class="menu-item logout" (click)="logout()">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#ec3013"
                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">

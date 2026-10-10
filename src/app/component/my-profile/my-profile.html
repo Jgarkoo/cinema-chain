@@ -1,0 +1,57 @@
+@if (loading()) {
+  <p class="loading">Loading…</p>
+} @else {
+  <form class="profile-form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <div class="field">
+      <label for="fullName">Full name</label>
+      <input id="fullName" type="text" formControlName="fullName"
+             [class.invalid]="invalid('fullName')">
+      @if (invalid('fullName')) {
+        <small class="error">Enter your full name</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email">
+      <small class="hint">Set at registration and cannot be changed</small>
+    </div>
+
+    <div class="field">
+      <label for="mobile">Mobile number</label>
+      <input id="mobile" type="tel" formControlName="mobileNumber" placeholder="599 123 456"
+             [class.invalid]="invalid('mobileNumber')">
+      @if (invalid('mobileNumber')) {
+        <small class="error">Enter 9 digits starting with 5</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="dob">Date of birth</label>
+      <input id="dob" type="date" formControlName="dateOfBirth" [max]="today"
+             [class.invalid]="invalid('dateOfBirth')">
+      @if (invalid('dateOfBirth')) {
+        <small class="error">Enter a valid date of birth</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="venue">Preferred Venue (Optional)</label>
+      <select id="venue" formControlName="preferredVenueId">
+        <option [ngValue]="null">No preference</option>
+        @for (venue of venues(); track venue.id) {
+          <option [ngValue]="venue.id">{{ venue.name }}</option>
+        }
+      </select>
+    </div>
+
+    @if (status(); as s) {
+      <p class="status" [class.success]="s.type === 'success'" [class.failure]="s.type === 'error'"
+         role="status">{{ s.text }}</p>
+    }
+
+    <button type="submit" class="save-button" [disabled]="saving()">
+      {{ saving() ? 'Saving…' : 'Save changes' }}
+    </button>
+  </form>
+}

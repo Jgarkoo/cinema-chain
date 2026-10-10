@@ -1,0 +1,29 @@
+<div class="profile-container">
+  <header>
+    <app-header class="app-header"></app-header>
+  </header>
+  <div class="profile-main">
+    <h1>My Profile</h1>
+    <div class="personal-pages">
+      <a [routerLink]="[]" [queryParams]="{ tab: 'info' }" [class.active]="activeTab() === 'info'">
+        Personal Information
+      </a>
+      <a [routerLink]="[]" [queryParams]="{ tab: 'tickets' }" [class.active]="activeTab() === 'tickets'">
+        My Tickets
+        @if (upcomingCount() > 0) {
+          <span class="badge">{{ upcomingCount() }}</span>
+        }
+      </a>
+    </div>
+    <div class="personal-and-ticket-page">
+      @if (activeTab() === 'info') {
+        <app-my-profile></app-my-profile>
+      } @else {
+        <app-my-tickets></app-my-tickets>
+      }
+    </div>
+  </div>
+  <footer>
+    <app-footer></app-footer>
+  </footer>
+</div>

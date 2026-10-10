@@ -1,0 +1,109 @@
+:host {
+  display: block;
+  padding: 0 30px 30px;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+.loading {
+  color: #a7adba;
+  font-size: 14px;
+}
+
+.profile-form {
+  max-width: 508px;
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    label {
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      height: 44px;
+      padding: 0 16px;
+      box-sizing: border-box;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background-color: #1e2031;
+      color: #fff;
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+      color-scheme: dark; /* light calendar icon */
+      transition: border-color 0.2s ease;
+
+      &::placeholder {
+        color: #7d8398;
+      }
+      &:focus {
+        border-color: #3a3f5c;
+      }
+      &.invalid {
+        border-color: #ec3013;
+      }
+      &:disabled {
+        color: #a7adba;
+        cursor: not-allowed;
+      }
+    }
+
+    select {
+      appearance: none;
+      cursor: pointer;
+      padding-right: 40px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M2 4.5l4 4 4-4'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+    }
+
+    .hint {
+      margin-top: 6px;
+      color: #a7adba;
+      font-size: 11px;
+    }
+    .error {
+      margin-top: 6px;
+      color: #ec3013;
+      font-size: 11px;
+    }
+  }
+
+  .status {
+    margin: 0 0 16px;
+    font-size: 13px;
+    &.success {
+      color: #4ade80;
+    }
+    &.failure {
+      color: #ec3013;
+    }
+  }
+
+  .save-button {
+    height: 40px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 20px;
+    background-color: #ec3013;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover:not(:disabled) {
+      background-color: #b3210d;
+    }
+    &:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+  }
+}
