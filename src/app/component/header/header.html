@@ -25,9 +25,39 @@
       <input
         type="text"
         placeholder="Search films and live events"
+        autocomplete="off"
+        [formControl]="searchControl"
+        (focus)="searchOpen.set(true)"
+        (keydown.escape)="searchOpen.set(false)"
       >
+
+      @if (showSearchPanel()) {
+        <div class="search-dropdown">
+          @if (searchLoading()) {
+            <p class="search-message">Searching…</p>
+          } @else if (searchResults().length) {
+            <div class="search-results">
+              @for (movie of searchResults(); track movie.id) {
+                <a
+                  class="search-item"
+                  [routerLink]="['/session']"
+                  [queryParams]="{ movie: movie.slug }"
+                  (click)="onResultClick()"
+                >
+                  <img [src]="movie.backdropUrl" [alt]="movie.title">
+                  <div class="search-item-info">
+                    <strong>{{ movie.title }}</strong>
+                    <span>{{ searchMeta(movie) }}</span>
+                  </div>
+                </a>
+              }
+            </div>
+          } @else {
+            <p class="search-message">No similar movies</p>
+          }
+        </div>
+      }
     </div>
-    <!-- avatar: picture if the user has one, otherwise initials -->
     <ng-template #avatarTpl>
   <span class="avatar">
     @if (user()?.avatar && !avatarFailed()) {

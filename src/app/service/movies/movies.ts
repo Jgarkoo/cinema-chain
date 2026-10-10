@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { MoviesResponse } from '../../interface/movie';
 import { Observable } from 'rxjs';
 import { notifyResponse } from '../../interface/notify';
@@ -16,7 +16,10 @@ export class Movies {
     'https://api.kinoxii.redberryinternship.ge/api/movies/featured';
   private readonly comingSoonURL =
     'https://api.kinoxii.redberryinternship.ge/api/movies/coming-soon';
-  private readonly notifyURL = 'https://api.kinoxii.redberryinternship.ge/api/movies';
+  private readonly notifyURL =
+    'https://api.kinoxii.redberryinternship.ge/api/movies';
+  private readonly searchURL =
+    'https://api.kinoxii.redberryinternship.ge/api/search';
 
   fetchFuturedMovies(): Observable<MoviesResponse> {
     return this.http.get<MoviesResponse>(this.futuredMoviesURL);
@@ -35,5 +38,11 @@ export class Movies {
       `${this.notifyURL}/${encodeURIComponent(movie)}/notify`,
       null,
     );
+  }
+
+  searchMovies(query: string): Observable<MoviesResponse> {
+    return this.http.get<MoviesResponse>(this.searchURL, {
+      params: new HttpParams().set('q', query),
+    });
   }
 }
