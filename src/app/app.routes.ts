@@ -27,7 +27,9 @@ export const routes: Routes = [
     title: 'Coming Soon Movies',
     path: 'coming-soon-movies',
     loadComponent: () =>
-      import('./component/see-all-comming-soon/see-all-comming-soon').then((m) => m.SeeAllCommingSoon),
+      import('./component/see-all-comming-soon/see-all-comming-soon').then(
+        (m) => m.SeeAllCommingSoon,
+      ),
   },
   {
     title: 'session',
@@ -41,6 +43,14 @@ export const routes: Routes = [
       import('./component/home-page/loged-in-homepage/loged-in-homepage').then(
         (m) => m.LogedInHomepage,
       ),
+    canActivate: [logInGuard],
+  },
+  {
+    title: 'profile page',
+    path: 'profile',
+    loadComponent: () =>
+      import('./component/profile/profile').then(
+        (m) => m.Profile),
     canActivate: [logInGuard],
   },
 ];

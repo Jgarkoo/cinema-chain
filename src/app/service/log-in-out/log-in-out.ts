@@ -43,10 +43,6 @@ export class LogInOut {
     );
   }
 
-  isLoggedIn(): boolean {
-    return this.loggedIn();
-  }
-
   setSession(token: string, user: User): void {
     this._token.set(token);
     this._user.set(user);
@@ -75,6 +71,13 @@ export class LogInOut {
       return raw ? (JSON.parse(raw) as User) : null;
     } catch {
       return null;
+    }
+  }
+
+  updateUser(user: User): void {
+    this._user.set(user);
+    if (this.isBrowser) {
+      localStorage.setItem(USER_KEY, JSON.stringify(user));
     }
   }
 }
