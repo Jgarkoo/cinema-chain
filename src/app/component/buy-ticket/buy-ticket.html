@@ -1,0 +1,148 @@
+<div class="buy-ticket-container">
+  <header>
+    <app-header class="header-app"></app-header>
+  </header>
+
+  @if (movie(); as movie) {
+    <section class="hero">
+      <img class="hero-backdrop" [src]="movie.backdropUrl" [alt]="movie.title">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <img class="poster" [src]="movie.posterUrl" [alt]="movie.title">
+        <div class="hero-text">
+          @if (movie.genres.length) {
+            <span class="genre">{{ movie.genres[0].name }}</span>
+          }
+          <h1>{{ movie.title }}</h1>
+          <p class="synopsis">{{ movie.synopsis }}</p>
+          <div class="hero-tags">
+            <span class="age" [title]="movie.ageRating.description">{{ movie.ageRating.code }}</span>
+            <span class="tag">◷ {{ movie.runtimeMinutes }} Min</span>
+            @for (format of movie.formats; track format.id) {
+              <span class="tag">{{ format.name }}</span>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="buy-ticket-main">
+      <section class="sessions">
+        <h2>Sessions</h2>
+        <p class="subtitle">{{ weekSessionCount() }} sessions over the next seven days</p>
+
+        <div class="days">
+          @for (day of days; track day.iso) {
+            <button type="button" class="day"
+                    [class.active]="selectedDate() === day.iso"
+                    [class.empty]="!hasSessions(day)"
+                    (click)="selectDate(day.iso)">
+              <span>{{ day.weekday }}</span>
+              <strong>{{ day.day }}</strong>
+            </button>
+          }
+        </div>
+
+        @if (tooYoung()) {
+          <p class="age-warning">
+            This title is rated {{ movie.ageRating.code }}. Your account is too young to book it.
+          </p>
+        }
+
+        @if (sessionsLoading()) {
+          <p class="empty">Loading sessions…</p>
+        } @else if (!venueGroups().length) {
+          <p class="empty">No sessions on this day</p>
+        } @else {
+          @for (venue of venueGroups(); track venue.name) {
+            <div class="venue">
+              <h3>{{ venue.name }}</h3>
+              <div class="halls">
+                @for (hall of venue.halls; track hall.name) {
+                  <div class="hall">
+                    <span class="hall-name">Hall {{ hall.name }}</span>
+                    <div class="slots">
+                      @for (s of hall.sessions; track s.id) {
+                        <button type="button" class="slot"
+                                [class.sold-out]="s.isSoldOut"
+                                [disabled]="s.isSoldOut || tooYoung()"
+                                [title]="s.language.name"
+                                (click)="openSession(s)">
+                          <span class="slot-main">
+                            <strong>{{ s.time }}</strong>
+                            <span class="slot-meta">
+                              {{ s.language.code }}
+                              <span class="format">{{ s.format.name }}</span>
+                            </span>
+                          </span>
+                          <span class="slot-side">
+                            <strong class="price">₾{{ s.price }}</strong>
+                            @if (s.isSoldOut) {
+                              <span class="left">Sold out</span>
+                            } @else {
+                              <span class="left" [class.low]="s.seatsLeft <= 5">{{ s.seatsLeft }} left</span>
+                            }
+                          </span>
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        }
+      </section>
+
+      <aside class="details">
+        <h2>Details</h2>
+        @if (movie.director) {
+          <div class="detail">
+            <span class="label">Director</span>
+            <strong>{{ movie.director }}</strong>
+          </div>
+        }
+        @if (movie.cast) {
+          <div class="detail">
+            <span class="label">Main cast</span>
+            <strong>{{ movie.cast }}</strong>
+          </div>
+        }
+        <div class="detail">
+          <span class="label">Duration</span>
+          <strong>{{ movie.runtimeMinutes }} minutes</strong>
+        </div>
+        <div class="detail">
+          <span class="label">Release date</span>
+          <strong>{{ movie.releaseDate | date: 'd MMMM y' }}</strong>
+        </div>
+        @if (formatNames()) {
+          <div class="detail">
+            <span class="label">Formats</span>
+            <strong>{{ formatNames() }}</strong>
+          </div>
+        }
+        <div class="detail">
+          <span class="label">From</span>
+          <strong>₾{{ movie.fromPrice }}</strong>
+        </div>
+        <div class="rating-note">
+          <span class="label">Rating note</span>
+          <p><strong>{{ movie.ageRating.code }}</strong> {{ movie.ageRating.description }}</p>
+        </div>
+      </aside>
+    </div>
+
+    @if (activeSession(); as session) {
+      <app-booking-modal [movie]="movie" [session]="session" (closed)="closeSession()"></app-booking-modal>
+    }
+  } @else if (loading()) {
+    <p class="page-message">Loading…</p>
+  } @else if (notFound()) {
+    <p class="page-message">We couldn't find this movie.</p>
+  }
+
+  <div class="footer">
+    <app-footer></app-footer>
+  </div>
+</div>
