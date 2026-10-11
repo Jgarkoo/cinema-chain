@@ -4,131 +4,229 @@
   </header>
   <div class="session-main">
     <div class="session-filter">
-        <h1>
-          Sessions
-        </h1>
+      <h1>
+        Sessions
+      </h1>
       <span>
         Browse showtimes across all venues
       </span>
-      <div class="filter-movies">
+    </div>
+    <div class="session-filter-div">
+      <div class="session-layout">
+        <div class="filter-movies">
           <h2>
             Filters
           </h2>
-        @if (filterMovies(); as options) {
-          <aside class="filters">
-            <div class="venue -filter-All">
-              <p>Venue</p>
-              <div class="venue-filter -filter">
-                @for (venue of options.venues; track venue.id) {
-                  <label class="venue-item -item">
-                    <input type="checkbox"
-                           class="check-box"
-                           #box
-                           [checked]="selectedVenues().includes(venue.id)"
-                           (change)="toggleVenue(venue.id, box.checked)"
-                           [value]="venue.id" />
-                    <span class="name">{{ venue.name }}</span>
-                    <span class="city">· {{ venue.city }}</span>
-                  </label>
+          @if (filterMovies(); as options) {
+            <aside class="filters">
+              <div class="venue -filter-All">
+                <p>Venue</p>
+                <div class="venue-filter -filter">
+                  @for (venue of options.venues; track venue.id) {
+                    <label class="venue-item -item">
+                      <input type="checkbox"
+                             class="check-box"
+                             #box
+                             [checked]="selectedVenues().includes(venue.slug)"
+                             (change)="toggleVenue(venue.slug, box.checked)"
+                             [value]="venue.slug" />
+                      <span class="name">{{ venue.name }}</span>
+                      <span class="city">· {{ venue.city }}</span>
+                    </label>
+                  }
+                </div>
+              </div>
+              <div class="date -filter-All">
+                <p>DATE</p>
+                <div class="date-filter">
+                  @for (day of days; track day.iso) {
+                    <button type="button" class="day"
+                            [class.active]="selectedDate() === day.iso"
+                            (click)="toggleDate(day.iso)">
+                      <span>{{ day.weekday }}</span>
+                      <strong>{{ day.day }}</strong>
+                    </button>
+                  }
+                </div>
+              </div>
+              <div class="ageRating -filter-All">
+                <p>
+                  AGE RATING
+                </p>
+                <div class="ageRating-filter -filter">
+                  @for(ageRate of options.ageRatings; track ageRate.code){
+                    <label class="ageRating-item -item">
+                      <input type="checkbox"
+                             class="check-box"
+                             [value]="ageRate.code"
+                             #box
+                             [checked]="selectedAgeRating().includes(ageRate.code)"
+                             (change)="toggleAgeRating(ageRate.code, box.checked)"
+                      />
+                      <span class="name">{{ ageRate.minAge }}</span>
+                    </label>
+                  }
+                </div>
+              </div>
+              <div class="format -filter-All">
+                <p>
+                  FORMAT
+                </p>
+                @if(filterMovies(); as options){
+                  <div class="format-filter -filter">
+                    @for(format of options.formats; track format.id){
+                      <label class="format-item -item">
+                        <input type="checkbox"
+                               class="check-box"
+                               [value]="format.slug"
+                               #box
+                               [checked]="selectedFormats().includes(format.slug)"
+                               (change)="toggleFormats(format.slug, box.checked)"
+                        />
+                        <span class="name">{{ format.name }}</span>
+                      </label>
+                    }
+                  </div>
                 }
               </div>
-            </div>
-            <div class="ageRating -filter-All">
-              <p>
-                AGE RATING
-              </p>
-              <div class="ageRating-filter -filter">
-                @for(ageRate of options.ageRatings; track ageRate.id){
-                  <label class="ageRating-item -item">
-                    <input type="checkbox"
-                           class="check-box"
-                           [value]="ageRate.id"
-                           #box
-                           [checked]="selectedAgeRating().includes(ageRate.id)"
-                           (change)="toggleAgeRating(ageRate.id, box.checked)"
-                    />
-                    <span class="name">{{ ageRate.minAge }}</span>
-                  </label>
+              <div class="language -filter-All">
+                <p>
+                  LANGUAGE
+                </p>
+                @if(filterMovies(); as options){
+                  <div class="language-filter -filter">
+                    @for(lang of options.languages; track lang.id){
+                      <label class="language-item -item">
+                        <input type="checkbox"
+                               class="check-box"
+                               [value]="lang.slug"
+                               #box
+                               [checked]="selectedLanguage().includes(lang.slug)"
+                               (change)="toggleLanguage(lang.slug, box.checked)"
+                        />
+                        <span class="name">{{ lang.name }}</span>
+                      </label>
+                    }
+                  </div>
                 }
               </div>
-            </div>
-            <div class="format -filter-All">
-              <p>
-                FORMAT
-              </p>
-              @if(filterMovies(); as options){
-                <div class="format-filter -filter">
-                  @for(format of options.formats; track format.id){
-                    <label class="format-item -item">
-                      <input type="checkbox"
-                             class="check-box"
-                             [value]="format.id"
-                             #box
-                             [checked]="selectedFormats().includes(format.id)"
-                             (change)="toggleFormats(format.id, box.checked)"
-                      />
-                      <span class="name">{{ format.name }}</span>
-                    </label>
-                  }
-                </div>
-              }
-            </div>
-            <div class="language -filter-All">
-              <p>
-                LANGUAGE
-              </p>
-              @if(filterMovies(); as options){
-                <div class="language-filter -filter">
-                  @for(lang of options.languages; track lang.id){
-                    <label class="language-item -item">
-                      <input type="checkbox"
-                             class="check-box"
-                             [value]="lang.id"
-                             #box
-                             [checked]="selectedLanguage().includes(lang.id)"
-                             (change)="toggleLanguage(lang.id, box.checked)"
-                      />
-                      <span class="name">{{ lang.name }}</span>
-                    </label>
-                  }
-                </div>
-              }
-            </div>
-            <div class="timeOfDay -filter-All">
-              <p>
-                TIME OF DAY
-              </p>
-              @if(filterMovies(); as options){
-                <div class="time-Of-Day-filter -filter">
-                  @for(tod of options.timeBands; track tod.id){
-                    <label class="time-Of-Day-item -item">
-                      <input type="checkbox"
-                             class="check-box"
-                             [value]="tod.id"
-                             #box
-                             [checked]="selectedTimeOfDay().includes(tod.id)"
-                             (change)="toggleTimeOfDay(tod.id, box.checked)"
-                      />
-                      <span class="name">{{ tod.id }}</span>
-                      <span class="city">· {{ tod.label }}</span>
-                    </label>
-                  }
-                </div>
-              }
-            </div>
-            <div class="filters-counter">
-                <span>
-                  {{ activeFiltersCount() }}
-                  {{ activeFiltersCount() === 1 ? 'filter' : 'filters' }} applied
-                </span>
+              <div class="timeOfDay -filter-All">
+                <p>
+                  TIME OF DAY
+                </p>
+                @if(filterMovies(); as options){
+                  <div class="time-Of-Day-filter -filter">
+                    @for(tod of options.timeBands; track tod.id){
+                      <label class="time-Of-Day-item -item">
+                        <input type="checkbox"
+                               class="check-box"
+                               [value]="tod.id"
+                               #box
+                               [checked]="selectedTimeOfDay().includes(tod.id)"
+                               (change)="toggleTimeOfDay(tod.id, box.checked)"
+                        />
+                        <span class="name">{{ tod.id }}</span>
+                        <span class="city">· {{ tod.label }}</span>
+                      </label>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="filters-counter">
+              <span>
+                {{ activeFiltersCount() }}
+                {{ activeFiltersCount() === 1 ? 'filter' : 'filters' }} applied
+              </span>
 
-              @if (activeFiltersCount() > 0) {
-                <button type="button" (click)="clearFilters()">Clear</button>
-              }
-            </div>
-          </aside>
-        }
+                @if (activeFiltersCount() > 0) {
+                  <button type="button" (click)="clearFilters()">Clear</button>
+                }
+              </div>
+            </aside>
+
+          }
+        </div>
       </div>
+      <section class="results">
+        <div class="results-top">
+          <span>Showing {{ totalSessions() }} sessions</span>
+          @if (filterMovies(); as options) {
+            <label class="sort">
+              Sort:
+              <select #sort (change)="changeSort(sort.value)">
+                @for (s of options.sorts; track s.id) {
+                  <option [value]="s.id"
+                          [selected]="selectedSort() !== null && '' + s.id === '' + selectedSort()">
+                    {{ s.label }}
+                  </option>
+                }
+              </select>
+            </label>
+          }
+        </div>
+        @if (loading() && !movieGroups().length) {
+          <p class="empty">Loading sessions…</p>
+        } @else if (!movieGroups().length) {
+          <p class="empty">No sessions match your filters</p>
+        } @else {
+          @for (group of movieGroups(); track group.movie.id) {
+            <article class="movie-row">
+              <div class="movie-head">
+                <img [src]="group.movie.posterUrl" [alt]="group.movie.title">
+                <div>
+                  <div class="title-line">
+                    <h3>{{ group.movie.title }}</h3>
+                    <span class="age">{{ group.movie.ageRating.minAge }}+</span>
+                  </div>
+                  <p>{{ group.movie.runtimeMinutes }} min</p>
+                </div>
+              </div>
+              <div class="slots">
+                @for (s of group.sessions; track s.id) {
+                  <button type="button" class="slot"
+                          [class.sold-out]="s.isSoldOut"
+                          [disabled]="s.isSoldOut"
+                          (click)="buy(group.movie, s.id)">
+                    <div class="slot-top">
+                      <strong>{{ s.time }}</strong>
+                      <span class="format">{{ s.format.name }}</span>
+                    </div>
+                    <div class="slot-mid">
+                      <span>{{ s.language.name }}</span>
+                      @if (s.isSoldOut) {
+                        <span class="sold">Sold out</span>
+                      } @else {
+                        <span class="left" [class.low]="s.seatsLeft <= 5">{{ s.seatsLeft }} left</span>
+                      }
+                    </div>
+                    <div class="slot-bottom">
+                      <span>{{ s.venue.name }} · Hall {{ s.hall.name }}</span>
+                      <strong>₾{{ s.price }}</strong>
+                    </div>
+                  </button>
+                }
+              </div>
+            </article>
+          }
+        }
+        @if (totalPages() > 1) {
+          <nav class="pagination">
+            <button type="button" [disabled]="page() === 1" (click)="goTo(page() - 1)">‹</button>
+            @for (p of pages(); track $index) {
+              @if (p === null) {
+                <span class="dots">…</span>
+              } @else {
+                <button type="button" [class.active]="p === page()" (click)="goTo(p)">{{ p }}</button>
+              }
+            }
+            <button type="button" [disabled]="page() === totalPages()"
+                    (click)="goTo(page() + 1)">›</button>
+          </nav>
+        }
+      </section>
     </div>
+  </div>
+  <div class="footer">
+    <app-footer></app-footer>
   </div>
 </div>
