@@ -1,59 +1,33 @@
 # CinemaChain
 
+Hi, my name is luka jgharkava. This is Kino XII, a cinema booking website I built with Angular. You can browse films, check showtimes across venues, pick your seats and buy tickets.
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.1.
 
-## Development server
 
-To start a local development server, run:
+# Tech stack
 
-```bash
-ng serve
-```
+I used Angular 22 with standalone components and signals for state. The app runs without Zone.js, so signals drive the change detection. For data I used Angular's HttpClient and RxJS. Everything comes from the Kino XII REST API, and the project is set up with server-side rendering.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+# Login / register: 
 
-## Code scaffolding
+Login and registration open in a popup. I wrote an HTTP interceptor that adds the token to every request. If the token expires, it opens the login popup and then repeats the request that failed. I also used route guards, so pages like the profile and buying tickets are only for logged-in users.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+# Sessions page: 
 
-```bash
-ng generate component component-name
-```
+On the Sessions page you can filter showtimes by venue, date, age rating, format, language and time of day, and sort them. The filters are sent to the API as arrays, and the results are paginated.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+# Buy ticket page: 
 
-```bash
-ng generate --help
-```
+Clicking Buy ticket opens the film's page, with its details and sessions for the next seven days, grouped by venue and hall. If your age is below the film's rating, the sessions are disabled.
 
-## Building
+# Booking modal: 
+Booking has three steps. First, the seat map. It's drawn from the API, because every hall has a different layout, with sections, aisles and gaps. You can pick up to three seats and choose Adult, Student or Child for each one. Child tickets are hidden for 16+ and 18+ films.
+    Click Next: 
+"When you continue, the seats are held for 8 minutes, and this timer counts down. If time runs out, you go back to seat selection with a warning. If someone else takes a seat at the same moment, the app tells you which seat was lost, keeps the rest of your selection and reloads the map."
+    Fill checkout
+In checkout, your name, email and phone are filled in from your profile. Payment is simulated. After paying, you see the confirmation with your order number.
 
-To build the project run:
+# Profile → My Tickets
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+In My Profile you can update your personal information. Under My Tickets you'll see upcoming and past orders, and you can refund a ticket up to two hours before the session.
