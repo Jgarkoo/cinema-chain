@@ -14,13 +14,13 @@ export interface TicketType {
   id: string
   name: string
   note: string | null
-  priceRate: string
+  priceRatio: string
   slug: string
   blockedFromRatingAge: string | null
 }
 
 export interface AgeRating {
-  id: string
+  code: string
   description: string
   minAge: number
 }

@@ -39,3 +39,14 @@ export interface AgeRate {
   minAge: number;
   description: string;
 }
+
+export interface MovieDetail extends Movie {
+  director: string;
+  cast: string;
+  availableDates: string[];
+  isNotified: boolean;
+}
+
+export interface MovieDetailResponse {
+  data: MovieDetail;
+}
