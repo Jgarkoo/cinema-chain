@@ -7,7 +7,8 @@ import { Ticket, TicketsResponse } from '../../interface/tickets';
 export class Tickets {
   private http = inject(HttpClient);
 
-  private readonly ticketsURL = 'https://api.kinoxii.redberryinternship.ge/api/me/tickets';
+  private readonly ticketsURL = 'https://api.kinoxii.redberryinternship.ge/api/tickets';
+  private readonly ordersURL = 'https://api.kinoxii.redberryinternship.ge/api/orders';
 
   readonly tickets = signal<Ticket[]>([]);
   readonly loading = signal(false);
@@ -42,7 +43,7 @@ export class Tickets {
     });
   }
 
-  refund(ticketId: number): Observable<unknown> {
-    return this.http.post(`${this.ticketsURL}/${ticketId}/refund`, null);
+  refund(reference: string): Observable<unknown> {
+    return this.http.post(`${this.ordersURL}/${encodeURIComponent(reference)}/refund`, null);
   }
 }
