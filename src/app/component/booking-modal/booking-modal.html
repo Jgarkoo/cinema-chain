@@ -1,0 +1,201 @@
+<div class="backdrop" (click)="close()">
+  <div class="modal" [class.confirm]="step() === 'done'" (click)="$event.stopPropagation()"
+       role="dialog" aria-modal="true" [attr.aria-label]="movie().title">
+
+    @if (step() === 'done') {
+      @if (order(); as order) {
+        <div class="confirmation">
+          <span class="check">✓</span>
+          <h2>Booking confirmed!</h2>
+          <p class="sub">Your tickets are ready. We've sent the confirmation to your email.</p>
+          <span class="reference">ORDER #{{ order.reference }}</span>
+
+          <div class="order-card">
+            <div class="order-head">
+              <img [src]="order.session.movie.posterUrl || movie().posterUrl" [alt]="order.session.movie.title">
+              <div>
+                <strong>{{ order.session.movie.title }}</strong>
+                <span>
+                  {{ order.session.venue.name }} · Hall {{ order.session.hall.name }} ·
+                  {{ order.session.date | date: 'EEE d MMM' }} · {{ order.session.time }}
+                </span>
+              </div>
+            </div>
+            <div class="row"><span>Seats</span><strong>{{ orderSummary().seats }}</strong></div>
+            <div class="row"><span>Tickets</span><strong>{{ orderSummary().tickets }}</strong></div>
+            <div class="row total"><span>Total paid</span><strong>₾{{ order.totalPrice }}</strong></div>
+          </div>
+
+          <div class="confirm-actions">
+            <button type="button" class="primary" (click)="viewTickets()">View my tickets</button>
+            <button type="button" class="secondary" (click)="backToHome()">Back to home</button>
+          </div>
+        </div>
+      }
+    } @else {
+      <div class="modal-head">
+        <div>
+          <h2>{{ movie().title }}</h2>
+          <p>
+            {{ session().venue.name }} · Hall {{ session().hall.name }} ·
+            {{ session().date | date: 'EEEE d MMMM' }} · {{ session().time }} ·
+            {{ session().format.name }} · {{ session().language.name }}
+          </p>
+        </div>
+        <div class="head-right">
+          @if (hold()) {
+            <div class="timer" [class.low]="secondsLeft() <= 60">
+              <span>Seats held</span>
+              <strong>{{ countdown() }}</strong>
+            </div>
+          }
+          <button type="button" class="close" (click)="close()" aria-label="Close">✕</button>
+        </div>
+      </div>
+
+      <div class="body">
+        <div class="main">
+          <div class="steps">
+            <button type="button" [class.active]="step() === 'seats'" (click)="goToSeats()">Seats</button>
+            <button type="button" [class.active]="step() === 'checkout'"
+                    [disabled]="!hold()" (click)="hold() && step.set('checkout')">Checkout</button>
+          </div>
+
+          @if (notice(); as notice) {
+            <div class="notice" [class.error]="notice.kind === 'error'" role="alert">
+              {{ notice.text }}
+              @if (notice.profileLink) {
+                <a [routerLink]="['/profile']" [queryParams]="{ tab: 'info' }" (click)="close()">
+                  Complete your profile
+                </a>
+              }
+            </div>
+          }
+
+          @if (step() === 'seats') {
+            <div class="screen">Screen</div>
+            @if (mapLoading() && !seatMap()) {
+              <p class="muted">Loading seats…</p>
+            } @else if (seatMap(); as map) {
+              <div class="seat-map">
+                @for (section of map.sections; track section.name) {
+                  <div class="section">
+                    <span class="section-name">{{ section.name }}</span>
+                    @for (row of section.rows; track row.label) {
+                      <div class="seat-row">
+                        <span class="row-label">{{ row.label }}</span>
+                        @for (seat of row.seats; track seat.id) {
+                          @if (seat.state === 'unavailable') {
+                            <span class="seat gap"></span>
+                          } @else {
+                            <button type="button" class="seat"
+                                    [class.selected]="isSelected(seat)"
+                                    [class.sold]="seat.state === 'sold'"
+                                    [class.held]="seat.state === 'held' && !seat.isMine"
+                                    [disabled]="!isSelectable(seat)"
+                                    [title]="seat.code"
+                                    (click)="toggleSeat(seat)">
+                              {{ seat.label }}
+                            </button>
+                          }
+                          @if (seat.aisleAfter) {
+                            <span class="aisle"></span>
+                          }
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="legend">
+                <span><i class="dot available"></i>Available</span>
+                <span><i class="dot selected"></i>Selected</span>
+                <span><i class="dot sold"></i>Sold</span>
+                <span><i class="dot held"></i>Held by another user</span>
+              </div>
+            }
+          } @else {
+            <form class="checkout" [formGroup]="checkoutForm" (ngSubmit)="pay()">
+              <label class="field full">
+                <span>Full Name</span>
+                <input formControlName="fullName" placeholder="e.g. Jane Doe" autocomplete="name">
+                @if (fieldError('fullName'); as error) { <small>{{ error }}</small> }
+              </label>
+              <label class="field">
+                <span>Email</span>
+                <input formControlName="email" type="email" placeholder="e.g. jane@example.com" autocomplete="email">
+                @if (fieldError('email'); as error) { <small>{{ error }}</small> }
+              </label>
+              <label class="field">
+                <span>Mobile Number</span>
+                <input formControlName="mobileNumber" placeholder="e.g. 550 12 34 56" autocomplete="tel">
+                @if (fieldError('mobileNumber'); as error) { <small>{{ error }}</small> }
+              </label>
+              <div class="divider"></div>
+              <label class="field full">
+                <span>Card Number</span>
+                <input formControlName="cardNumber" inputmode="numeric" placeholder="4242 4242 4242 4242" autocomplete="cc-number">
+                @if (fieldError('cardNumber'); as error) { <small>{{ error }}</small> }
+              </label>
+              <label class="field">
+                <span>Expiry</span>
+                <input formControlName="expiry" placeholder="MM/YY" autocomplete="cc-exp">
+                @if (fieldError('expiry'); as error) { <small>{{ error }}</small> }
+              </label>
+              <label class="field">
+                <span>CVV</span>
+                <input formControlName="cvv" inputmode="numeric" placeholder="123" maxlength="3" autocomplete="cc-csc">
+                @if (fieldError('cvv'); as error) { <small>{{ error }}</small> }
+              </label>
+            </form>
+          }
+        </div>
+
+        <aside class="side">
+          @if (step() === 'seats') {
+            <h3>Your seats · Max {{ maxSeats() }}</h3>
+            <p class="muted">Pick up to {{ maxSeats() }} seats from the map. Each seat can carry its own ticket type.</p>
+            <div class="picked">
+              @for (item of selection(); track item.seat.id) {
+                <div class="picked-seat">
+                  <strong>{{ item.seat.code }}</strong>
+                  <select #type [value]="item.ticketType" (change)="changeTicketType(item.seat.id, type.value)">
+                    @for (t of allowedTicketTypes(); track t.slug) {
+                      <option [value]="t.slug" [selected]="t.slug === item.ticketType">{{ t.name }}</option>
+                    }
+                  </select>
+                  <span class="price">₾{{ priceFor(item.ticketType) }}</span>
+                  <button type="button" class="remove" (click)="toggleSeat(item.seat)" aria-label="Remove seat">✕</button>
+                </div>
+              }
+            </div>
+            <div class="subtotal">
+              <span>Subtotal</span>
+              <strong>₾{{ subtotal() }}</strong>
+            </div>
+            <button type="button" class="primary"
+                    [disabled]="!selection().length || holding()"
+                    (click)="holdSeats()">
+              {{ holding() ? 'Holding seats…' : 'Next: Checkout' }}
+            </button>
+          } @else if (hold(); as hold) {
+            <h3>Summary</h3>
+            <div class="summary-card">
+              <strong>{{ movie().title }}</strong>
+              <span class="muted">Hall {{ session().hall.name }} · {{ session().date | date: 'EEE d MMM' }} · {{ session().time }}</span>
+              <div class="row"><span>Seats</span><strong>{{ heldSummary().seats }}</strong></div>
+              <div class="row"><span>Tickets</span><strong>{{ heldSummary().tickets }}</strong></div>
+            </div>
+            <div class="subtotal">
+              <span>Subtotal</span>
+              <strong>₾{{ hold.subtotal }}</strong>
+            </div>
+            <button type="button" class="primary" [disabled]="paying()" (click)="pay()">
+              {{ paying() ? 'Paying…' : 'Pay · Complete order' }}
+            </button>
+          }
+        </aside>
+      </div>
+    }
+  </div>
+</div>
