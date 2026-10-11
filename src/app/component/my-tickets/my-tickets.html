@@ -69,7 +69,11 @@
                     (click)="refund(order)">
               {{ refundingId() === order.id ? 'Refunding…' : 'Refund' }}
             </button>
-            <p class="refund-note">{{ order.isRefundable ? 'Refundable' : 'No longer refundable' }}</p>
+            <p class="refund-note">
+              {{ order.isRefundable
+                ? 'Refundable until ' + (refundDeadline(order) | date: 'HH:mm, EEE d MMM')
+                : 'No longer refundable' }}
+            </p>
           }
         </div>
       </article>

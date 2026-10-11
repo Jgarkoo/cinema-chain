@@ -21,7 +21,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, debounceTime, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { Movies } from '../../service/movies/movies';
 import { Movie } from '../../interface/movie';
-
+import { BuyTicketNav } from '../../service/buy-tickets/buy-tickets';
 
 type AuthMode = 'login' | 'register';
 
@@ -32,6 +32,7 @@ type AuthMode = 'login' | 'register';
   templateUrl: './header.html',
 })
 export class Header implements OnDestroy {
+  private ticketNav = inject(BuyTicketNav);
 
   auth = inject(LogInOut);
   private destroyRef = inject(DestroyRef);
@@ -63,33 +64,33 @@ export class Header implements OnDestroy {
   private previousBodyOverflow = '';
 
   constructor(@Inject(DOCUMENT) private document: Document) {
+    this.searchControl.valueChanges
+      .pipe(
+        map((value) => value.trim()),
+        debounceTime(300),
+        distinctUntilChanged(),
+        tap((query) => {
+          this.searchQuery.set(query);
+          this.searchLoading.set(query !== '');
+          if (!query) {
+            this.searchResults.set([]);
+          }
+        }),
+        switchMap((query) =>
+          query === ''
+            ? of<Movie[]>([])
+            : this.movieService.searchMovies(query).pipe(
+                map((res) => res.data ?? []),
+                catchError(() => of<Movie[]>([])),
+              ),
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((movies) => {
+        this.searchResults.set(movies);
+        this.searchLoading.set(false);
+      });
     effect(() => {
-      this.searchControl.valueChanges
-        .pipe(
-          map((value) => value.trim()),
-          debounceTime(300),
-          distinctUntilChanged(),
-          tap((query) => {
-            this.searchQuery.set(query);
-            this.searchLoading.set(query !== '');
-            if (!query) {
-              this.searchResults.set([]);
-            }
-          }),
-          switchMap((query) =>
-            query === ''
-              ? of<Movie[]>([])
-              : this.movieService.searchMovies(query).pipe(
-                  map((res) => res.data ?? []),
-                  catchError(() => of<Movie[]>([])),
-                ),
-          ),
-          takeUntilDestroyed(this.destroyRef),
-        )
-        .subscribe((movies) => {
-          this.searchResults.set(movies);
-          this.searchLoading.set(false);
-        });
       const open = this.authModal.loginOpen();
       untracked(() => {
         if (open && this.authMode !== 'login') {
@@ -120,6 +121,11 @@ export class Header implements OnDestroy {
   showSearchPanel = computed(() => this.searchOpen() && this.searchQuery() !== '');
   get authModalIsOpen(): boolean {
     return this.authMode !== null;
+  }
+
+  openMovie(movie: Movie): void {
+    this.onResultClick();
+    this.ticketNav.open(movie.slug);
   }
 
   openAuthModal(mode: AuthMode): void {

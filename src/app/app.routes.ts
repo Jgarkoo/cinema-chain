@@ -48,9 +48,16 @@ export const routes: Routes = [
   {
     title: 'profile page',
     path: 'profile',
+    loadComponent: () => import('./component/profile/profile').then((m) => m.Profile),
+    canActivate: [logInGuard],
+  },
+  {
+    title: 'purchase ticket',
+    path: 'buy-ticket',
     loadComponent: () =>
-      import('./component/profile/profile').then(
-        (m) => m.Profile),
+      import('./component/buy-ticket/buy-ticket').then(
+        (m) => m.BuyTicket,
+      ),
     canActivate: [logInGuard],
   },
 ];

@@ -4,6 +4,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Tickets } from '../../service/tickets/tickets';
 import { Ticket } from '../../interface/tickets';
 
+const REFUND_CUTOFF_MS = 2 * 60 * 60 * 1000;
+
 @Component({
   imports: [DatePipe],
   selector: 'app-my-tickets',
@@ -24,6 +26,10 @@ export class MyTickets {
   refundingId = signal<number | null>(null);
   errorMessage = signal<string | null>(null);
 
+  refundDeadline(order: Ticket): Date {
+    return new Date(new Date(order.session.startsAt).getTime() - REFUND_CUTOFF_MS);
+  }
+
   canRefund(order: Ticket): boolean {
     return order.isRefundable && order.status === 'paid';
   }
@@ -36,7 +42,7 @@ export class MyTickets {
     this.refundingId.set(ticket.id);
     this.errorMessage.set(null);
 
-    this.ticketsService.refund(ticket.id).subscribe({
+    this.ticketsService.refund(ticket.reference).subscribe({
       next: () => {
         this.refundingId.set(null);
         this.ticketsService.load();

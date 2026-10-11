@@ -40,15 +40,17 @@
               @for (movie of searchResults(); track movie.id) {
                 <a
                   class="search-item"
-                  [routerLink]="['/session']"
+                  [routerLink]="['/buy-ticket']"
                   [queryParams]="{ movie: movie.slug }"
                   (click)="onResultClick()"
                 >
-                  <img [src]="movie.backdropUrl" [alt]="movie.title">
-                  <div class="search-item-info">
-                    <strong>{{ movie.title }}</strong>
-                    <span>{{ searchMeta(movie) }}</span>
-                  </div>
+                  <button type="button" class="search-item" (click)="openMovie(movie)">
+                    <img [src]="movie.backdropUrl" [alt]="movie.title">
+                    <div class="search-item-info">
+                      <strong>{{ movie.title }}</strong>
+                      <span>{{ searchMeta(movie) }}</span>
+                    </div>
+                  </button>
                 </a>
               }
             </div>
