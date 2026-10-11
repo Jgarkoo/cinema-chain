@@ -1,23 +1,44 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Movies } from '../../../service/movies/movies';
 import { Movie } from '../../../interface/movie';
+import { BuyTicketNav } from '../../../service/buy-tickets/buy-tickets';
+import { RecentlyViewed } from '../../../service/recently-veiwed/recently-viewed';
+import { RouterLink } from '@angular/router';
+
 
 @Component({
-  imports: [],
+  imports: [ RouterLink ],
   selector: 'app-futured-films',
   styleUrl: './futured-films.scss',
   templateUrl: './futured-films.html',
 })
 export class FuturedFilms {
   private movieService = inject(Movies);
+  private ticketNav = inject(BuyTicketNav);
+  private recent = inject(RecentlyViewed);
 
   futuredMovies = signal<Movie[]>([]);
   futuredMovieIndex = signal(0);
   currentMovie = computed(() => this.futuredMovies()[this.futuredMovieIndex()]);
-  currentGenres = computed(() => this.currentMovie()?.genres.map((genre) => genre.name).join(', ') ?? '');
-  currentFormats = computed(() => this.currentMovie()?.formats.map((format) => format.name).join(' ') ?? '');
+  currentGenres = computed(
+    () =>
+      this.currentMovie()
+        ?.genres.map((genre) => genre.name)
+        .join(', ') ?? '',
+  );
+  currentFormats = computed(
+    () =>
+      this.currentMovie()
+        ?.formats.map((format) => format.name)
+        .join(' ') ?? '',
+  );
 
   private slideInterval?: ReturnType<typeof setInterval>;
+
+  buyTicket(movie: Movie): void {
+    this.recent.add(movie);
+    this.ticketNav.open(movie.slug);
+  }
 
   ngOnInit() {
     this.getFuturedMovies();

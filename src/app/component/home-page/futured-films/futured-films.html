@@ -30,11 +30,11 @@
         {{ movie.synopsis }}
       </p>
       <div class="movie-buttons">
-        <button class="buy-button">
+        <button class="buy-button" (click)="buyTicket(movie)">
           <span>✦</span>
           Buy tickets
         </button>
-        <button class="sessions-button">
+        <button class="sessions-button"  [routerLink]="['/session']">
           All sessions
         </button>
       </div>
